@@ -12,7 +12,10 @@
 
  参数文件(parameter file)
  保存控制文件的位置，指定某些初始化参数，这些参数大多定义内存结构有多大。
- init file/ init<SID>.ora
+ 
+ init file     init<SID>.ora
+ 
+ 服务器参数文件：spfile<ORACLE_SID>.ora
  
 
 
