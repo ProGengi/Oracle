@@ -5,6 +5,7 @@
 #
 
   实例(instance) 与数据库(database) 的定义
+  instance:是内存与进程的集合。
   database:是操作系统文件与磁盘的集合。
   一个数据库可以有多个实例，但一个实例只能打开一个数据库。
 
@@ -14,7 +15,6 @@
  保存控制文件的位置，指定某些初始化参数，这些参数大多定义内存结构有多大。
  
  init file     init<SID>.ora
- 
  服务器参数文件：spfile<ORACLE_SID>.ora
  
 
