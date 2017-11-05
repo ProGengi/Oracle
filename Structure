@@ -10,29 +10,60 @@
   一个数据库可以有多个实例，但一个实例只能打开一个数据库。
 
  文件
-
+-------------------------------------------------------------------------------
  参数文件(parameter file) 在 oracle database reference 中有每个参数的详细解释
  保存控制文件的位置，指定某些初始化参数，这些参数大多定义内存结构有多大。
- 
+
  init file     init<SID>.ora
- 服务器参数文件：spfile<ORACLE_SID>.ora
- 
+ 服务器参数文件(server parameter file)：spfile<ORACLE_SID>.ora
+ 服务器参数文件只能放在服务器本机，不能放在客户机上。
+
  查看一个参数值可以通过以下两种方法：
  1.select value from V$parameter where name='';
  2.show parameter pga_agg //show parameter会自动模糊查询。
- 
+
  两种设置各个参数值：
  1.只设置当前实例的参数值。//修改spfile.ora立即生效
  2.永久地设置。 修改init.ora
- 
+
  最基本的init.ora文件
  db_name='orcl'
  db_block_size='8192'
  control_files=''
- 
- 
 
+ 假设有个数据库使用了以前遗留的参数文件，那么创建spfile：
+ sql> create spfile from pfile;
+ 在重启之后就可以了。
+ 在集群环境中，所有实例使用同一个spfile.
 
+ 修改spfile中的值：
+ 因为spfile是二进制文件，所以修改只能用alter system的方式
+ alter system set parameter = value <comment='text'><deferred>
+       <scope=memory|spfile|both><sid='sid|*'>;
+ scope = memory 只在实例中修改，数据库重启之后不保存。
+ scope = spfile 只修改参数文件中的值，只有在数据库重启之后才会生效。
+ scpoe = both 立即生效，且在参数文件中修改。(默认)
+ sid 是集群才用得到的参数。
+
+ example:
+ sql>alter system set pga_aggreedate_target = 1024m;
+
+ 取消spfile设置的值。
+ alter system reset parameter <scope=memory|spfile|both> sid='sid|*';
+
+ 从spfile创建pfile
+ sql>create pfile='/tmp/pfile.txt' from spfile;
+ 这样创建pfile的原因：
+ 1.创建一个一次性的参数文件，用于启动数据库。启动完成之后，数据库使用的参数文件依然是spfile.
+ 2.维护修改历史。
+
+ 修复被破坏的spfile。
+ 1.在unix上
+ >string spfile<>.ora //就可以看到spfile的值，然后将其粘贴到init.ora然后用create spfile from pfile即可。
+ 2.万一spfile丢失了
+ 在数据库的警告日志可以恢复参数文件。
+
+-------------------------------------------------------------------------------
  跟踪文件(trace file)
  通常是服务器进程对某种异常错误条件做出响应时创建的诊断文件
 
@@ -52,5 +83,3 @@
 
  闪回日志文件(flashback log file)
  存储数据库块的“前映像”。
-
- 
