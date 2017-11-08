@@ -9,6 +9,17 @@ SGA(system global area):
 关于SGA的动态性能试图 V$sgastat
 
 sga的分类：
-1.java池：为数据库中运行的JVM分配的一段固定大小的内存。
-2.大池：共享服务器连接使用大池作为会话内存。rman可能使用大池作为磁盘i/o缓冲区。
-3.共享池:
+1.java池(java pool)：为数据库中运行的JVM分配的一段固定大小的内存。
+2.大池(large pool)：共享服务器连接使用大池作为会话内存。rman可能使用大池作为磁盘i/o缓冲区。
+3.共享池(share pool):包含共享游标，存储过程，状态对象，字典缓存和诸如此类的大量其他数据。
+4.流池(stream pool): oracle流专用池。
+
+对sga影响较大的参数：
+java_pool_size：控制java池的大小
+shared_pool_size:控制共享池的大小
+large_pool_size:控制大池的大小
+db_*_cache_size：共8个共享cache_size参数，控制各个可用缓冲区缓存的大小。
+log_buffer：控制重做缓冲区的大小
+sga_target:用于sga自动内存管理
+sga_max_size:用于控制数据库启动并运行时sga可以达到的最大大小。
+
