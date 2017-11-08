@@ -6,4 +6,9 @@
 PGA(progress global area):
 
 SGA(system global area):
-动态性能试图 V$sgastat
+关于SGA的动态性能试图 V$sgastat
+
+sga的分类：
+1.java池：为数据库中运行的JVM分配的一段固定大小的内存。
+2.大池：共享服务器连接使用大池作为会话内存。rman可能使用大池作为磁盘i/o缓冲区。
+3.共享池:
