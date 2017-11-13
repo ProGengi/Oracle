@@ -20,3 +20,34 @@
  Oracle 支持的两种隔离级别是 read committed(读已提交) 和 serializable(可串行化)。
  read committed 是指事务只能读取数据库中已经提交的数据。(是oracle的默认模式)
  
+自治事务(autonomous transaction)
+ 可以独立于父事务提交或回滚。(即使父事务失败了，也不影响子事务的提交或回滚)
+
+-------------------------------------------------------------------------
+ create or replace procedure autonomous_insert
+ as
+ pragma autonomous_transaction
+ 
+ begin 
+ insert into t values('A');
+ end;
+
+ create or replace procedure Nonautonomous_insert
+ as
+ begin
+ insert into t values('b');
+ end;
+ 
+ begin 
+ insert into t values ('c');
+ autonomous_insert;
+ rollback;
+ end;
+ 
+ 查询结果为：A
+ ---------------------------------------------------------------------------
+ 
+ 
+ 
+ 
+ 
