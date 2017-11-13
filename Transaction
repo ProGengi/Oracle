@@ -3,3 +3,15 @@
 #
 #
 #
+
+ACID
+原子性(atomicity):事务中所有动作要么都发生，要么都不发生。
+一致性(consistency):事务将数据库从一种状态转为另一种状态。
+隔离性(isolation):一个事务的影响在提交之前对其他事务不可见。
+永久性(durability):事务一旦提交就是永久的。
+
+oracle中事务的开始与结束
+从第一条修改数据开始到commit或者rollback结束。(注意隐式提交)
+
+ORA-01555：snapshot too old
+undo段内的信息被覆盖，就会收到ORA-01555错误。
