@@ -12,13 +12,37 @@ redo(重做信息)
 假如停电Oracle会使用在线重做日志文件恢复实例。
 假如磁盘介质失败，Oracle使用归档日志文件以及在线重做日志文件进行恢复。
 
+生成的redo越多，操作花费的时间就越长，整个系统就越慢。
+测量redo
+V$MYSTAT 保存会话的信息。
+V$statname 保存v$MYSTAT中每一行表示什么。
+
+define S=&1
+select a.name,b.value,to_char(b.value-&V,'999,999,999') ADD 
+from V$MYSTAT a, V$STATNAME b
+where a.statistic#=b.statistic#
+and lower(a.name) like '%'||lower('&S')||'%'
+
+在sql中使用nologging时，产生的redo信息比平时少，而不是不产生。
+
+
+
 -----------------------------------------------------------------------------------------------
 undo(撤销信息)
 当执行数据修改时，数据库会产生undo信息，万一执行失败或者回滚，都能回到原来的状态。undo信息存储在undo段中。
 对于每个insert，Oracle会完成一个delete，对于每个delete，Oracle会完成一个insert，对于每个update，Oracle会执行一个反update。
 回滚只是将数据库还原的从操作，数据库并非真的还原成原来的样子，只是逻辑上相同而已。
 
+提交和回滚
+commit做的事情:
+1.为事务生成一个SCN。
+2.LGWR将重做日志写到磁盘。
+3.释放锁。
 
+rollback做的事情:
+1.撤销所有已经做的事情。
+2.释放锁
+回滚的开销远比提交大。
 
-
-
+-------------------------------------------------------------------------
+临时表不会产生redo因此不可恢复，但是产生少量undo。临时表有普通表所有的一切特性。
