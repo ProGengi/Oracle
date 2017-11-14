@@ -19,5 +19,7 @@ Oracle索引
    create bitmap index idx_t on t(A);
    
  5.function-based index(基于函数的索引):
+   create index idx_t on emp(upper(ename));
+   
  6.application domain index(应用域索引)：
  
