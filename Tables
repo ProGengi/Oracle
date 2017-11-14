@@ -16,5 +16,21 @@
  Oracle全表扫描时，会扫描HWM之下所有的数据块，即使其中不包含任何数据，这回影响全表扫描的性能，尤其是HWM下空块较多的情况下。
  
  
- 
+ 临时表用于保存事务或者会话期间的中间结果集。临时表中的数据，只有当前会话可见，其他会话不可见。
+ 临时表有两种：
+ 1.基于会话的
+  create global temporary table temp_session
+  on commit preserve rows
+  as slect * from t where 1=0;
+  
+ 2.基于事务的
+  create global temporary table temp_trans
+  on commit delete rows
+  as select * from t where 1=0;
+  临时表并不支持以下特性：
+   不能引用完整性约束。不能创建外键。
+   不能是IOT
+   不能分区
+   不能通过analyze生成统计信息
+   
  
