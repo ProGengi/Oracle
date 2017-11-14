@@ -1,0 +1,17 @@
+#
+#
+#
+#
+#
+
+Oracle索引
+ 1.B-tree index(balance tree)：构造类似于二叉树
+  储存rowid以及键值。在非唯一索引中，数据先安键值排序然后按照rowid排序。在唯一索引中，数据直接按照键值排序。
+  b树索引所有叶子子块都应该在树的同一层上，这一层也称树的高度，所从根遍历到叶子块都会访问相同数目的块。
+  大多数B-tree索引的高度都为2或者3，即使索引中有数百万记录也是如此。因此在索引中找到一个键只要2~3次I/O。
+ 2.descending index：降序索引，
+ 3.reverse key index(反向键索引):这也是B树索引，只是将键的值反转了。用于减少右侧中对索引块的竞争。
+ 4.bitmap index:适合建立在高度重复且值较少的列。如100万行，只有Y,N,NULL三个值。
+ 5.function-based index(基于函数的索引):
+ 6.application domain index(应用域索引)：
+ 
