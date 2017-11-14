@@ -1,0 +1,20 @@
+#
+#
+#
+#
+#
+
+表的种类
+ 1.堆组织表(heap orgnized table):就是普通的表，数据以堆的方式管理。
+ 2.索引组织表(index orgnized table):数据按照索引结构存储。
+ 3.嵌套表(nested table):可以认为emp是dept的子表，因为emp有个外键deptno指向dept。嵌套表与子表的区别是嵌套表不像子表那样是独立表。
+ 4.临时表(temporary table):
+ 5.外部表(external table):数据存放在操作系统文件中
+ 
+ 高水位线(high-water-mark,HWM).
+ 随着数据的插入，高水位线会越来越高，但是删除(delete)数据并不会降低高水位线。直到重建或者截断表。
+ Oracle全表扫描时，会扫描HWM之下所有的数据块，即使其中不包含任何数据，这回影响全表扫描的性能，尤其是HWM下空块较多的情况下。
+ 
+ 
+ 
+ 
