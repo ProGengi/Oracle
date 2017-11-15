@@ -1,0 +1,45 @@
+#
+#
+#
+#
+#
+
+数据加载
+使用sql*loader需要一个控制文件。控制文件包含描述输入数据的信息，表的信息。
+
+基本的控制文件(test.ctl)
+LOAD DATA  //加载数据
+INFILE *   //如果是*表示要加载的数据在控制文件中，如果是路径表示要加载的数据在路径文件中
+INTO TABLE DEPT //表示要加载的表
+FILEDS TERMINATED BY ',' //加载数据用什么分隔符分隔
+(DEPTNO,DEPTNAME,LOC) //要插入的列
+BEGINDATA             //开始加载
+10，SALES,BOSTON      //数据
+20，MANAGE,GS
+30，ACCOUNT,HUSTON
+
+sql>sqlldr userid=/ control=test.ctl;
+
+FAQ:
+1.加载界定数据(就是数据用引号括起来的如，"shanghai,China")？
+ FILEDS TERMINATED BY ',' OPTTIONALLY ENCLOSED BY '"'
+ 
+2.加载固定格式的数据(定长，1-10是第一个字段，11-20是第二个)
+  不需要FILEDS TERMINATED BY 这行，加上position即可。
+ (depeno position(1:10),
+  deptname position(11:20),
+  loc position(21:30))
+
+3.如何加载日期
+ (deptno,deptname,loc,updated_date date 'yyyy-mm-dd')
+
+4.如何使用函数加载数据
+ (deptno,dname "upper(:dname)",loc "upper(:loc)")
+ SQL函数可以引用任何列，不论将函数实际上应用于哪个列。
+
+5.如何从存储过程来调用sqlldr?
+ 不可以。
+ 
+其他注意事项：
+1.输入的默认字符串长度是255，超过会报错。
+
