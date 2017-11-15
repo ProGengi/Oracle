@@ -18,6 +18,9 @@
   
   四种分区方法
   1.列表
+   partition by list(A)
+   (partition p1 values ('A','B','C'),
+    partition p2 values ('d','e'))
   2.范围
     create table t()
     partition by range(A)
@@ -31,6 +34,8 @@
     hash分区时，分区的个数最好是2的N次方个。 
   4.组合
   
+  分区索引
+  每个分区表都有一个分区索引，这叫局部索引。
  
  高水位线(high-water-mark,HWM).
  随着数据的插入，高水位线会越来越高，但是删除(delete)数据并不会降低高水位线。直到重建或者截断表。
