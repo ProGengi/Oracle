@@ -4,16 +4,29 @@
 #
 #
 PGA(progress global area):
-
+ PGA是为单独的服务器进程存储私有进程的区域。是非共享的，而SGA是共享的。
+ PGA的作用：
+  1.存储用户连接信息。会话属性，绑定变量，游标状态等。
+  2.排序。
+  3.
+  
 SGA(system global area):
 关于SGA的动态性能试图 V$sgastat
 
 sga的分类：
 1.java池(java pool)：为数据库中运行的JVM分配的一段固定大小的内存。
-2.大池(large pool)：共享服务器连接使用大池作为会话内存。rman可能使用大池作为磁盘i/o缓冲区。
-3.共享池(share pool):包含共享游标，存储过程，状态对象，字典缓存和诸如此类的大量其他数据。
-4.流池(stream pool): oracle流专用池。
-5.日志缓冲区(log buffer):
+2.大池(large pool)：
+  共享服务器连接使用大池作为会话内存。rman可能使用大池作为磁盘i/o缓冲区。
+3.共享池(share pool):
+  存放最近执行的SQL，PL/SQL程序，数据字典信息。对sql，pl/sql的语法检查编译都在这里进行。
+  可以进一步分割成两块：
+  1.库缓存(library cache):存放sql，pl/sql相关信息。
+  2.数据字典区(dictionary cache):存放数据字典相关信息。
+4.数据库缓冲区(database buffer cache):
+  保存最近从数据文件上读取的数据。如果数据库缓冲区中有所需要的数据，那么直接从DBC中使用，否则将数据从数据文件提取到DBC然后再做处理。
+5.
+6.流池(stream pool): oracle流专用池。
+7.日志缓冲区(log buffer):
 
 对sga影响较大的参数：
 java_pool_size：控制java池的大小
