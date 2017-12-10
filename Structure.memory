@@ -37,3 +37,5 @@ log_buffer：控制重做缓冲区的大小
 sga_target:用于sga自动内存管理
 sga_max_size:用于控制数据库启动并运行时sga可以达到的最大大小。
 
+
+
