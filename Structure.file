@@ -85,7 +85,14 @@
  数据库中允许有多种不同块的大小。在同一个表空间中，块的大小都一样。
  表空间(tablespace):每个段只属于一个表空间，一个表空间中可以有多个段。
  表空间由一个或者多个数据文件组成。
-
+ 
+ 查看已经创建完的表空间创建语句。
+ --set long 2000 //显示更多的文本
+ SELECT DBMS_METADATA.GET_DDL('TABLESPACE', TS.tablespace_name)  FROM DBA_TABLESPACES TS; --查看所有表空间建表语句。
+ 
+ 查看本用户默认的表空间
+ select username, default_tablespace from user_users;
+ 
 
 -------------------------------------------------------------------------------
  临时文件(temp file)
