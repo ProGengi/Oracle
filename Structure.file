@@ -76,7 +76,7 @@
 
  存储层次体系
  段(segement):表，索引，回滚段。
- 创建一个表时，会创建一个表段。创建分区表时，每个分区就是一个段。创建索引时，就会创建一个索引段。
+   创建一个表时，会创建一个表段。创建分区表时，每个分区就是一个段。创建索引时，就会创建一个索引段。
  占用存储空间的每一个对象，都存储在段中。
  区(extent):是文件中逻辑上连续的分配空间。每个段至少一个区，回滚段至少两个区。
  如果一个对象超过了区的大小，那么系统会自动分配另一个区。
@@ -84,15 +84,69 @@
  一个段由一个区或者多个区组成，一个区由许多连续的块组成。
  数据库中允许有多种不同块的大小。在同一个表空间中，块的大小都一样。
  表空间(tablespace):每个段只属于一个表空间，一个表空间中可以有多个段。
- 表空间由一个或者多个数据文件组成。
+  表空间由一个或者多个数据文件组成。
  
+ 表空间的增删改查
+------------------------------------tablespace-start-----------------------------------------------
+--创建表空间
+create [temporary] tablespace userSpace  --表空间名称
+datafile 'C:\app\yeduanqiao\oradata\dbname\useSpacer.dbf'    --文件路径及文件名
+size 50M   --表空间大小
+AUTOEXTEND ON --自动扩展
+NEXT 50M   --每次自动扩展50M
+maxsize 20480m  --表空间最大容量
+extent management local; 
+
+--给用户指定默认表空间
+create user yuhang identified by yuhang  
+default tablespace yuhang_data  
+temporary tablespace yuhang_temp;  
+
+--查看用户创建时的ddl语句
+ select dbms_metadata.get_ddl('USER','CHANNEL') from  dual;
+ select dbms_metadata.get_granted_ddl('OBJECT_GRANT','CHANNEL') from   dual;
+ select dbms_metadata.get_granted_ddl('ROLE_GRANT','CHANNEL') from   dual;
+ select dbms_metadata.get_granted_ddl('SYSTEM_GRANT','CHANNEL') from   dual;  
+
+--查看本用户默认的表空间
+ select username, default_tablespace from user_users;
+
+
+---查看表空间名称、id，文件存储位置,初始大小
+select tablespace_name,file_id,file_name,bytes
+from dba_data_files
+order by file_id;
+
  查看已经创建完的表空间创建语句。
  --set long 2000 //显示更多的文本
- SELECT DBMS_METADATA.GET_DDL('TABLESPACE', TS.tablespace_name)  FROM DBA_TABLESPACES TS; --查看所有表空间建表语句。
- 
- 查看本用户默认的表空间
- select username, default_tablespace from user_users;
- 
+ --查看所有表空间创建语句。
+ SELECT DBMS_METADATA.GET_DDL('TABLESPACE', TS.tablespace_name)  FROM DBA_TABLESPACES TS; 
+
+
+--修改表空间大小
+alter database
+datafile 'C:\app\yeduanqiao\oradata\dbname\useSpacer.dbf'  
+resize 1000M
+
+--修改表空间大小:增加数据文件
+alter tablespace USERSPACE
+add datafile 'C:\app\yeduanqiao\oradata\dbname\USERSPACE2.dbf' 
+size 500M
+
+
+删除表空间及数据文件
+ --删除空的表空间，但是不包含物理文件
+drop tablespace tablespace_name;
+--删除非空表空间，但是不包含物理文件
+drop tablespace tablespace_name including contents;
+--删除空表空间，包含物理文件
+drop tablespace tablespace_name including datafiles;
+--删除非空表空间，包含物理文件
+drop tablespace tablespace_name including contents and datafiles;
+--如果其他表空间中的表有外键等约束关联到了本表空间中的表的字段，就要加上CASCADE CONSTRAINTS
+drop tablespace tablespace_name including contents and datafiles CASCADE CONSTRAINTS;
+
+-------------------------------------tablespace-end-------------------------------------------- 
 
 -------------------------------------------------------------------------------
  临时文件(temp file)
