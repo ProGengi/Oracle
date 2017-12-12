@@ -4,3 +4,198 @@
 #
 #
 
+step1.
+ --检查软件包
+ 	rpm -qa | grep ...
+ 	
+ 	binutils-2.17.50.0.6
+ 	compat-libstdc++-33-3.2.3
+ 	compat-libstdc++-33-3.2.3 (32 bit)
+ 	elfutils-libelf-0.125
+ 	elfutils-libelf-devel-0.125
+ 	gcc-4.1.2
+ 	gcc-c++-4.1.2
+ 	glibc-2.5-24
+ 	glibc-2.5-24 (32 bit)
+ 	glibc-common-2.5
+ 	glibc-devel-2.5
+ 	glibc-devel-2.5 (32 bit)
+ 	glibc-headers-2.5
+ 	ksh-20060214
+ 	libaio-0.3.106
+ 	libaio-0.3.106 (32 bit)
+ 	libaio-devel-0.3.106
+ 	libaio-devel-0.3.106 (32 bit)
+ 	libgcc-4.1.2
+ 	libgcc-4.1.2 (32 bit)
+ 	libstdc++-4.1.2
+ 	libstdc++-4.1.2 (32 bit)
+ 	libstdc++-devel 4.1.2
+ 	make-3.81
+ 	sysstat-7.0.2
+
+ --安装没有的包(yum源目录:/etc/yum.repos.d)
+   yum -y install  gcc gcc-c++ make binutilscompat-libstdc++-33 elfutils-libelf elfutils-libelf-devel glibc .....
+
+step2.
+  --创建用户和组，修改系统参数，创建目录
+  
+ 	  #groupadd oinstall
+ 	  #groupadd -g 502 dba
+ 	  #groupadd -g 503 oper
+ 	  #groupadd -g 504 asmadmin
+ 	  #groupadd -g 506 asmdba
+ 	  #groupadd -g 505 asmoper
+ 	  
+ 	  #useradd -u 502 -g oinstall -G dba,asmdba,oper oracle
+ 	  #passwd oracle
+  
+  --修改限制文件，将以下参数追加到文件末尾
+  # vi /etc/security/limits.conf
+	  oracle soft nproc 2047
+	  oracle hard nproc 16384
+	  oracle soft nofile 1024
+		oracle hard nofile 65536
+		oracle soft stack 10240
+		
+	--修改参数文件，将以下参数追加到文件末尾	
+	# vi /etc/sysctl.conf
+		fs.aio-max-nr = 1048576
+		fs.file-max = 6815744
+		kernel.shmall = 2097152
+		kernel.shmmax = 4294967295
+		kernel.shmmni = 4096
+		kernel.sem = 250 32000 100 128
+		net.ipv4.ip_local_port_range = 9000 65500
+		net.core.rmem_default = 262144
+		net.core.rmem_max = 4194304
+		net.core.wmem_default = 262144
+		net.core.wmem_max = 1048586
+		
+	--使参数生效	
+	# sysctl -p	
+	
+	--创建目录 
+  # mkdir -p /u01/app/oracle
+  # chown -R oracle:oinstall /u01/app/oracle
+  # chmod -R 775 /u01/app/oracle	
+  # mkdir -p /u01/app/oraInventory
+  # chown -R oracle:oinstall /u01/app/
+  
+  --解压数据库并修改相关权限
+  # unzip ... /home/oracle/  --解压完会出现一个/database
+  # chown -R oracle:oinstall database/
+  # chmod 775 database
+  
+  --切换到oracle
+  su - oracle
+  vi .bash_profile
+
+   --文件内加入并修改至以下内容
+　　export ORACLE_BASE=/usr/local/oracle
+　　export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/db_1
+　　export ORACLE_SID=orcl    
+　　export ORACLE_OWNER=oracle
+　　export PATH=$PATH:$ORACLE_HOME/bin:$HOME/bin
+
+   -- 保存退出后执行source命令立即生效。
+   source .bash_profile
+
+
+  
+ step3.
+   --安装数据库
+   --在/home/oracle/database/respone/下有三个.rsp文件
+      db_install.rsp：安装应答
+	  dbca.rsp：创建数据库应答
+	  netca.rsp：建立监听、本地服务名等网络设置应答
+   --将db_install.rsp备份一下，再做修改。
+     cp /home/oracle/database/respone/db_install.rsp /home/oracle/database/respone/db_install2.rsp
+   --修改db_install.rsp  
+   -- less /home/oracle/database/response/db_install.rsp |grep -v "#"|grep -v "^$"
+   $vi   db_install.rsp
+    #####################################################################################
+    oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v11_2_0
+	oracle.install.option=INSTALL_DB_SWONLY
+	ORACLE_HOSTNAME=oracledb
+	UNIX_GROUP_NAME=oinstall
+	INVENTORY_LOCATION=/opt/app/oracle/oraInventory
+	SELECTED_LANGUAGES=en,zh_CN
+	ORACLE_HOME=/opt/app/oracle/product/11.2.0/db_1
+	ORACLE_BASE=/opt/app/oracle
+	oracle.install.db.InstallEdition=EE
+	oracle.install.db.isCustomInstall=false
+	oracle.install.db.customComponents=oracle.server:11.2.0.1.0,oracle.sysman.ccr:10.2.7.0.0,oracle.xdk:11.2.0.1.0,oracle.rdbms.oci:11.2.0.1.0,oracle.network:11.2.0.1.0,oracle.network.listener:11.2.0.1.0,oracle.rdbms:11.2.0.1.0,oracle.options:11.2.0.1.0,oracle.rdbms.partitioning:11.2.0.1.0,oracle.oraolap:11.2.0.1.0,oracle.rdbms.dm:11.2.0.1.0,oracle.rdbms.dv:11.2.0.1.0,orcle.rdbms.lbac:11.2.0.1.0,oracle.rdbms.rat:11.2.0.1.0
+	oracle.install.db.DBA_GROUP=dba
+	oracle.install.db.OPER_GROUP=oinstall
+	oracle.install.db.CLUSTER_NODES=
+	oracle.install.db.config.starterdb.type=GENERAL_PURPOSE
+	oracle.install.db.config.starterdb.globalDBName=ora11g
+	oracle.install.db.config.starterdb.SID=ora11g
+	oracle.install.db.config.starterdb.characterSet=AL32UTF8
+	oracle.install.db.config.starterdb.memoryOption=true
+	oracle.install.db.config.starterdb.memoryLimit=1500
+	oracle.install.db.config.starterdb.installExampleSchemas=false
+	oracle.install.db.config.starterdb.enableSecuritySettings=true
+	oracle.install.db.config.starterdb.password.ALL=oracle
+	oracle.install.db.config.starterdb.password.SYS=
+	oracle.install.db.config.starterdb.password.SYSTEM=
+	oracle.install.db.config.starterdb.password.SYSMAN=
+	oracle.install.db.config.starterdb.password.DBSNMP=
+	oracle.install.db.config.starterdb.control=DB_CONTROL
+	oracle.install.db.config.starterdb.gridcontrol.gridControlServiceURL=
+	oracle.install.db.config.starterdb.dbcontrol.enableEmailNotification=false
+	oracle.install.db.config.starterdb.dbcontrol.emailAddress=
+	oracle.install.db.config.starterdb.dbcontrol.SMTPServer=
+	oracle.install.db.config.starterdb.automatedBackup.enable=false
+	oracle.install.db.config.starterdb.automatedBackup.osuid=
+	oracle.install.db.config.starterdb.automatedBackup.ospwd=
+	oracle.install.db.config.starterdb.storageType=FILE_SYSTEM_STORAGE
+	oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=
+	oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=
+	oracle.install.db.config.asm.diskGroup=
+	oracle.install.db.config.asm.ASMSNMPPassword=
+	MYORACLESUPPORT_USERNAME=
+	MYORACLESUPPORT_PASSWORD=
+	SECURITY_UPDATES_VIA_MYORACLESUPPORT=
+	DECLINE_SECURITY_UPDATES=true    //一定要设为 true
+	PROXY_HOST=
+	PROXY_PORT=
+	PROXY_USER=
+	PROXY_PWD=
+   ####################################################################################
+   
+   --开始安装DB
+   ./runInstaller -silent -force -responseFile /home/oracle/database/response/db_install.rsp
+  
+  --安装结束需要用root执行两个脚本
+  
+step4
+  --静默建实例
+    vi /home/oracle/database/response/dbca.rsp  --修改之前备份下
+    ###################################################################################
+      RESPONSEFILE_VERSION = "11.2.0"
+	  OPERATION_TYPE = "createDatabase"
+	  GDBNAME = "orcl"
+	  SID = "orcl"
+	  TEMPLATENAME = "General_Purpose.dbc"
+	  SYSPASSWORD = "oracle"
+	  SYSTEMPASSWORD = "oracle"
+	  DATAFILEDESTINATION = /home/oracle/app/oradata
+	  CHARACTERSET = "AL32UTF8"
+	  TOTALMEMORY = "10240"         //物理内存的60%左右
+    ###################################################################################
+    
+    静默安装：dbca -silent -responseFile /home/oracle/response/dbca.rsp         
+    静默卸载：dbca -silent -deleteDatabase -sourcedb orcl -sid orcl
+    
+    --成功之后应该可以连接到sqlplus
+    
+    --配置监听
+     监听文件目录：/u01/app/oracle/product/11.2.0/db_1/network/admin/
+     listener.ora  --服务器端需要的
+     tnsname.ora --客户端需要的
+     
+     $lsnrctl start
+     
+ 
