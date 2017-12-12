@@ -74,7 +74,9 @@
  数据文件(data file)
  主要存放数据表，索引，和其他段。
  数据文件的大小限制公式：db_block_size*2^22(4194304) block_size=8k时，单个数据文件最大为32G.
- 原因：oracle用22位rowid来表示block号，22位最多只能代表2^22-1个数据块。(why?)
+ 原因：oracle用22位rowid来表示block号，22位最多只能代表2^22-1个数据块。
+ rowid的组成：data_object_id#+rfile#+block#+row#
+ 一个扩展rowid采用10个byte来存储，共80bit，其中obj#32bit,rfile#10bit,block#22bit,row#16bit
  
  查看数据文件的大小：
  select file_name,bytes/2014/1024||'M' file_size from dba_data_files;
