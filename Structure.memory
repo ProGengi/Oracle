@@ -20,7 +20,7 @@ sga的分类：
 3.共享池(share pool):
   存放最近执行的SQL，PL/SQL程序，数据字典信息。对sql，pl/sql的语法检查编译都在这里进行。
   可以进一步分割成两块：
-  1.库缓存(library cache):存放sql，pl/sql相关信息。
+  1.库缓存(library cache):存放sql，pl/sql相关信息。v$sql存放当前存在库缓存中的sql语句。
   2.数据字典区(dictionary cache):存放数据字典相关信息。
 4.数据库缓冲区(database buffer cache):
   保存最近从数据文件上读取的数据。如果数据库缓冲区中有所需要的数据，那么直接从DBC中使用，否则将数据从数据文件提取到DBC然后再做处理。
