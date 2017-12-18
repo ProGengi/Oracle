@@ -13,6 +13,16 @@ PGA(progress global area):
 SGA(system global area):
 关于SGA的动态性能试图 V$sgastat
 
+每条sql在执行之前都要进行解析，每一条ddl语句都要进行硬解析，select可能进行软/硬解析。
+硬解析：
+ 1、语法检查(syntax check): 检查此sql的拼写是否语法。
+ 2、语义检查(semantic check): 诸如检查sql语句中的访问对象是否存在及该用户是否具备相应的权限。
+ 3、对sql语句进行解析(prase): 利用内部算法对sql进行解析，生成解析树(parse tree)及执行计划(execution plan)。
+ 4、执行sql，返回结果(execute and return)
+
+软解析：比硬解析少了步骤三。
+ 
+
 sga的分类：
 1.java池(java pool)：为数据库中运行的JVM分配的一段固定大小的内存。
 2.大池(large pool)：
