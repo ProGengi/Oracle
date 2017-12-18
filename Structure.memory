@@ -20,7 +20,7 @@ SGA(system global area):
  4、执行sql，返回结果(execute and return)
 
 软解析：比硬解析少了步骤三。
-每条sql解析完之后都有一个hash值。如果该sql的hash值存在即进行软解析，否则硬解析。 
+在共享池中，每条sql解析完之后都有一个hash值。如果该sql的hash值存在即进行软解析，否则硬解析。 
 
 sga的分类：
 1.java池(java pool)：为数据库中运行的JVM分配的一段固定大小的内存。
@@ -33,6 +33,7 @@ sga的分类：
   2.数据字典区(dictionary cache):存放数据字典相关信息。
 4.数据库缓冲区(database buffer cache):
   保存最近从数据文件上读取的数据。如果数据库缓冲区中有所需要的数据，那么直接从DBC中使用，否则将数据从数据文件提取到DBC然后再做处理。
+  如果要访问的数据块存在于数据库缓冲区，那么这样的访问是逻辑读，如果要访问的数据在数据文件中，那么该访问是物理读。
 5.
 6.流池(stream pool): oracle流专用池。
 7.日志缓冲区(log buffer):
