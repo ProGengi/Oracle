@@ -32,12 +32,23 @@ Oracle索引
  2.descending index：降序索引，
    create index idx_t on t(A desc);
  3.reverse key index(反向键索引):这也是B树索引，只是将键的值反转了。用于减少右侧中对索引块的竞争。
- 4.bitmap index:适合建立在高度重复且值较少的列。如100万行，只有Y,N,NULL三个值。
-   位图索引特别不适用于OLTP系统，也不适用多个会话频繁更新。
-   create bitmap index idx_t on t(A);
-   
- 5.function-based index(基于函数的索引):
+  
+ 4.function-based index(基于函数的索引):
    create index idx_t on emp(upper(ename));
    
- 6.application domain index(应用域索引)：
+ 5.application domain index(应用域索引)：
+
+ 6.bitmap index(位图索引):适合建立在高度重复且值较少的列。
+   如100万行，只有Y,N,NULL三个值且均匀分布时。但是，如果100万行，只有几百行是Y,剩下的都是N的情况就不适合建立位图索引。
+   位图索引特别不适用于OLTP系统，也不适用多个会话频繁更新。除了位图索引其他索引都是基于B树的。
+   create bitmap index idx_t on t(A);
+
+
+选择建索引的列：
+ 1.该列上使用了等式或者范围谓语
+ 2.一张表中基数低的列更适合当索引。假设表中100万行数据，A列100个唯一值，在A列上的基数就是100万/100=10000。B列200个唯一值，B列上的基数就是5000.所以B列比A列更适合当索引。
+ 3.索引的成本，插入，删除，以及更新都需要维护索引。
  
+空值问题：
+ 空值不存储单列索引上，但是存储在多列索引上。
+ create index idx_t1 on t1(n1,0); --当where条件是 n1 is null 时，也可走索引。
