@@ -29,10 +29,12 @@ Oracle索引
   大多数B-tree索引的高度都为2或者3，即使索引中有数百万记录也是如此。因此在索引中找到一个键只要2~3次I/O。
   如果所访问的行太多(所占比多于20%),与全表扫描相比，B树索引要花费更多的时间。
   
- 2.descending index：降序索引，
+ 2.descending index：降序索引，索引默认按照升序存储。
    create index idx_t on t(A desc);
- 3.reverse key index(反向键索引):这也是B树索引，只是将键的值反转了。用于减少右侧中对索引块的竞争。
-  
+ 3.reverse key index(反向键索引):
+   这也是B树索引，只是将键的值反转了。用于减少右侧中对索引块的竞争。
+   反向键索引的范围扫描不能使用范围运算符，between，>,<等。
+   
  4.function-based index(基于函数的索引):
    create index idx_t on emp(upper(ename));
    
@@ -42,7 +44,9 @@ Oracle索引
    如100万行，只有Y,N,NULL三个值且均匀分布时。但是，如果100万行，只有几百行是Y,剩下的都是N的情况就不适合建立位图索引。
    位图索引特别不适用于OLTP系统，也不适用多个会话频繁更新。除了位图索引其他索引都是基于B树的。
    create bitmap index idx_t on t(A);
-
+ 7.虚拟索引：
+   虚拟索引没有相关的存储空间，因此也叫无段索引。
+   alter session set "_use_nosegment_indexes" = true; --默认是是false，优化器不会选择。
 
 选择建索引的列：
  1.该列上使用了等式或者范围谓语
