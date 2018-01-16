@@ -17,8 +17,20 @@
       pl/sql 
       模式对象的存储：
       tables,indexes,partitions存储在segement(段)中,其他保存在元数据中，像view，sequence。
-      
-      
+  当数据库创建时，会有两个模式也会默认一起创建，SYS,SYSTEM。 sys模式下存储数据字典，system存储显示管理信息的附加表和视图。 
+  
+  1.2表的种类：
+     1.relational tables 关系表
+       关系表有两种类型：
+        1.heap-organized table 
+          堆组织表就是普通的表，create table..不以特定的顺序存储行，也就是说数据是无序的。
+        2.index-organized table 
+          索引组织表，数据是有序的。
+        3.external tables 
+          外部表，元数据(即表结构什么的)存储在数据库中，但是数据存储在数据库之外。  
+     2.objects tables 对象表
+    表可以是permanent(永久的)或者temporary(临时的)。
+    永久表与临时表的区别是，元数据都是一样永久定义的，但是永久表的数据永久存在，而临时表的数据只存在与会话或者事务中。   
       
       
       
