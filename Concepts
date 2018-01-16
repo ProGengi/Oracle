@@ -16,3 +16,9 @@
       synonym
       pl/sql 
       模式对象的存储：
+      tables,indexes,partitions存储在segement(段)中,其他保存在元数据中，像view，sequence。
+      
+      
+      
+      
+      
