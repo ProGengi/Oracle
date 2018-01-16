@@ -1,0 +1,18 @@
+#
+#
+#
+#
+#
+
+1.table and table clusters
+  1.1 schema objects(模式对象)
+      一个用户拥有一个同名的模式对象。一个模式对象包含了该用户及相关数据。
+      模式对象类型：
+      table
+      index
+      partition
+      view
+      sequence
+      synonym
+      pl/sql 
+      模式对象的存储：
