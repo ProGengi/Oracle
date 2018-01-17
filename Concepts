@@ -1,5 +1,5 @@
 #
-#
+#oracle 11g database concepts
 #
 #
 #
@@ -7,16 +7,8 @@
 1.table and table clusters
   1.1 schema objects(模式对象)
       一个用户拥有一个同名的模式对象。一个模式对象包含了该用户及相关数据。
-      模式对象类型：
-      table
-      index
-      partition
-      view
-      sequence
-      synonym
-      pl/sql 
-      模式对象的存储：
-      tables,indexes,partitions存储在segement(段)中,其他保存在元数据中，像view，sequence。
+      模式对象类型：table,index,partition,view,sequence,synonym,pl/sql 
+      模式对象的存储：tables,indexes,partitions存储在segement(段)中,其他保存在元数据中，像view，sequence。
   当数据库创建时，会有两个模式也会默认一起创建，SYS,SYSTEM。 sys模式下存储数据字典，system存储显示管理信息的附加表和视图。 
   
   1.2表的种类：
@@ -32,5 +24,26 @@
     表可以是permanent(永久的)或者temporary(临时的)。
     永久表与临时表的区别是，元数据都是一样永久定义的，但是永久表的数据永久存在，而临时表的数据只存在与会话或者事务中。   
       
+   虚拟列：是某个列上的表达式或者函数，不占用磁盘空间。例如，income字段就是sal跟commission_pct的虚拟列。   
       
-      
+ 1.3字段的数据类型：character numberic datetime rowid 
+   varchar2跟char类型值的比较，
+   Oracle Database compares VARCHAR2 values using nonpadded comparison semantics and compares CHAR values using blank-padded comparison semantics.
+   oracle将varchar2填充空白然后再跟char进行比较。
+   
+   The NCHAR and NVARCHAR2 data types store Unicode character data. 
+   Unicode is a universal encoded character set that can store information in any language using a single character set.
+   NCHAR stores fixed-length character strings that correspond to the national character set, 
+   whereas NVARCHAR2 stores variable length character strings.  
+   --NCHAR 跟NVARCHAR2存储Unicode字符数据。
+   --Unicode是一种通用编码字符集，可以用单个字符集存储任何语言中的信息。
+   --NCHAR存储固定长度的字符串对应的国家字符集，而NVARCHAR2存储可变长度的字符串
+   
+   nvarcahr2跟varchar2的区别：
+   nvarchar2(10) 不论存什么都可以存十个。
+   varchar2(10) 可以存5个汉字或者10个英文字母。
+   
+   
+   
+   
+   
