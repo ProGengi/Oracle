@@ -47,7 +47,23 @@
    如果现在是1999年 09 RR会翻译成2009 YY会翻译成1909.RR的意思是离当前时间最近的时间，YY仅仅是本世纪的年份。
    24小时格式 HH:MI:SS
    
+   全局临时表
+    表的元数据存储在数据字典中，表的数据只在当前会话或者事务中插入可见，当结束事务或者会话时，数据消失。数据存储在临时段中，将会在事务或者会话结束时回收。
+    /***************************************************************************************************************/
+    Because temporary tables are statically defined, you can create indexes for them with the CREATE INDEX statement. 
+    Indexes created on temporary tables are also temporary. 
+    The data in the index has the same session or transaction scope as the data in the temporary table. 
+    You can also create a view or trigger on a temporary table.
+    Temporary segments are deallocated at the end of the transaction for transaction-specific temporary tables and 
+    at the end of the session for session-specific temporary tables.
+    /**************************************************************************************************************/
+    create global temporary table ... on commit
    
+   External table 外部表
+   表结构在数据库中，但是数据在数据库之外。可通过sql，pl/sql，java访问数据。通常在数据仓库环境，ETL任务中使用。
+   sql*loader，sqldump就是使用的外部表。
+   外部表不支持索引，虚拟列，列对象，且外部表是只读的。
+   CREATE TABLE ... ORGANIZATION EXTERNAL --创建外部表
    
    
    
