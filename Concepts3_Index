@@ -41,6 +41,15 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
    
    full index scan 全索引扫描：
    
+   Fast Full Index Scan 快速全索引扫描，是全表扫描的替代：
+   也是一种全索引扫描，按照特定的顺序读取数据块。
+   
+   Index Range Scan 索引范围扫描(例如：WHERE last_name LIKE 'A%')：
+   An index range scan is an ordered scan of an index that has the following characteristics:
+      1. One or more leading columns of an index are specified in conditions. --在条件中指定引导列
+         A condition specifies a combination of one or more expressions and logical (Boolean) operators and returns a value of TRUE, FALSE, or UNKNOWN.
+         --一个条件指定一个或者多个表达式和逻辑（布尔）运算符的组合，并返回true、false或未知值。如 salary>2000.
+      2. 0, 1, or more values are possible for an index key.
    
    
  2.Bitmap
