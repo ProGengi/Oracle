@@ -8,4 +8,43 @@
   1.频繁查询的列，并且返回的行占整张表较小百分比。
   2.在一个唯一键列上，需要手动指定索引和索引选项。
   
-  
+主键和唯一键约束自动创建索引。  
+Primary and unique keys automatically have indexes, but you might want to create an index on a foreign key.  
+
+复合索引
+越经常用，基数越高就越可以作为引导列。高基数：该列不同值占所有行数的比例。
+CREATE INDEX employees_ix
+   ON employees (last_name, job_id, salary);
+   可以走索引的情况：三列，前两列，只有last_name列，都可以走索引。其他都不走索引。
+
+CREATE INDEX employee_idx1 ON employees (last_name, job_id);
+CREATE INDEX employee_idx2 ON employees (job_id, last_name);
+同一张表只要顺序不同，组合索引可以在相同的列上建立。
+
+唯一索引按照value排序，非唯一索引按照rowid和value排序。
+除了位图索引和集群键值为空，否则不会索引所有键值为null的列。
+
+索引的分类：
+ 1.B-tree
+   基于B-tree的索引：
+   1.Index-organized tables
+   2.Reverse key indexes
+   3.Descending indexes
+   4.B-tree cluster indexes
+   
+   B-tree(balance tree)索引的结构：分支块用来查询，叶子块用来存储数据。上层分支块包含下层分支块的索引。
+   叫平衡树的原因是，所有叶子块都在同一高度。树的高度是从根节点到叶子节点所访问块的数量。
+   
+   index scan 索引扫描：
+   索引扫描的I/O次数就是B-tree的高度。
+   如果sql语句只检索索引列，那么就直接从索引中取出数据，而不需要从表中读取。如果还有其他的列，oracle使用rowid查找表中的行，这就是回表。
+   
+   full index scan 全索引扫描：
+   
+   
+   
+ 2.Bitmap
+ 3.Function-based indexes
+ 4.Application domain indexes
+ 
+ 
