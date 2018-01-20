@@ -51,6 +51,13 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
          --一个条件指定一个或者多个表达式和逻辑（布尔）运算符的组合，并返回true、false或未知值。如 salary>2000.
       2. 0, 1, or more values are possible for an index key.
    
+   Index Unique Scan 索引唯一扫描：
+   当谓语使用等号运算符引用唯一索引键上的列时，数据库执行唯一扫描。
+   SELECT * FROM   employees WHERE  employee_id = 5;
+   找到要的值就不会继续往下找了。
+   
+   Index Skip Scan 索引跳跃扫描：
+   
    
  2.Bitmap
  3.Function-based indexes
