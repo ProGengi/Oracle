@@ -28,10 +28,6 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
  1.B-tree
    基于B-tree的索引：
    1.Index-organized tables
-   2.Reverse key indexes
-   3.Descending indexes
-   4.B-tree cluster indexes
-   
    B-tree(balance tree)索引的结构：分支块用来查询，叶子块用来存储数据。上层分支块包含下层分支块的索引。
    叫平衡树的原因是，所有叶子块都在同一高度。树的高度是从根节点到叶子节点所访问块的数量。
    
@@ -57,6 +53,14 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
    找到要的值就不会继续往下找了。
    
    Index Skip Scan 索引跳跃扫描：
+      
+   2.Reverse key indexes
+     在RAC中的热块竞争问题。在A节点中插入一个id20，同时B节点也插入一个id21，就会插入到同一个块中这时使用反向键索引，就可将顺序键均匀分布。
+     但是当谓语使用between或者大于小于这种范围查询时，则不能走索引。
+   3.Descending indexes
+     索引默认都是升序的。降序索引，将索引键倒序存储。降序索引通常建立在那些经常倒序排列的键上。
+   4.B-tree cluster indexes
+   
    
    
  2.Bitmap
