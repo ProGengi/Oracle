@@ -61,6 +61,10 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
      索引默认都是升序的。降序索引，将索引键倒序存储。降序索引通常建立在那些经常倒序排列的键上。
    4.B-tree cluster indexes
    
+   key compression :键值压缩
+    只可以在B-tree和index orgnized table 上压缩index。
+    键值一般可以分为两部分，分组块和唯一块，也叫前缀项和后缀项。通过共享后缀项来实现压缩的原理。
+    
    
    
  2.Bitmap
