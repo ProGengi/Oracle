@@ -77,6 +77,29 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
    
    
  3.Function-based indexes
+   create index idx_test on emp (upper(last_name));
+   select * from emp where upper(last_name) = 'JAMES'；
+   
  4.Application domain indexes
+ 
+ 
+Index organized tables：
+ 是有B-tree index组成的表。行插入在主键定义的索引中，数据就是索引，索引就是数据。
+ 当相关的数据必须存在一起时，或者表要按照一定的顺序存储时都可以使用索引组织表。
+ 
+ 索引组织表的特征：
+ 1.必须要有主键，主键就代表着唯一的行，而在堆表中，rowid代表唯一行。
+ 2.对单个行的访问可以通过主键间接实现。
+ 3.全索引扫描或者快速全索引扫描返回指定的顺序。
+ 4.不能存在于cluster中
+ 5.能包含LOB列但不能包含long列
+ 6.不能有虚拟列
+ 
+ 索引组织表存储数据时，将一行都存进去，主键作为唯一标识。索引结构与B-tree一样。
+ 
+ 第二索引：就是索引上的索引。
+  logical rowid
+  
+ 
  
  
