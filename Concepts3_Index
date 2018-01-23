@@ -68,6 +68,14 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
    
    
  2.Bitmap
+   B-tree索引一个index指向一行，bitmap索引一个index指向多行。
+   通常用于数据仓库或者以特定方式查询多列的环境。
+   可是使用bitmap的情况：
+   1.该列的基数很低
+   2.表是只读的或者不受DML语句的变化。
+   因为在更新某个索引列的时候，会锁定这些数据的某些行，所以位图索引不适合OLTP系统。
+   
+   
  3.Function-based indexes
  4.Application domain indexes
  
