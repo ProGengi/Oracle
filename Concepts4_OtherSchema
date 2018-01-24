@@ -1,0 +1,37 @@
+#
+#
+#
+#
+#
+
+Partitions：
+ 好处：
+  1.提高可用性。查询优化器自动移除未引用的分区，查询时不影响分区不可用
+  2.易于管理模式对象。DDL可以操作一个分区而不是整张表或者索引，删除分区可以避免删除大量的行。
+  3.减少OLTP中资源争用的问题。分区表是每个分区都占一个段，DML分布在许多段中而不是一个段。
+  4.数据仓库中查询性能的提高。
+  
+分区策略：
+ range：
+ CREATE TABLE time_range_sales
+   ( prod_id        NUMBER(6)
+   , cust_id        NUMBER
+   , time_id        DATE
+   , channel_id     CHAR(1)
+   , promo_id       NUMBER(6)
+   , quantity_sold  NUMBER(3)
+   , amount_sold    NUMBER(10,2)
+   )
+PARTITION BY RANGE (time_id)
+ (PARTITION SALES_1998 VALUES LESS THAN (TO_DATE('01-JAN-1999','DD-MON-YYYY')),
+  PARTITION SALES_1999 VALUES LESS THAN (TO_DATE('01-JAN-2000','DD-MON-YYYY')),
+  PARTITION SALES_2000 VALUES LESS THAN (TO_DATE('01-JAN-2001','DD-MON-YYYY')),
+  PARTITION SALES_2001 VALUES LESS THAN (MAXVALUE)
+ ); 
+ 
+ 
+ list：
+ 
+ hash：
+ compisite：
+ 
