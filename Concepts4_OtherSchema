@@ -31,6 +31,20 @@ PARTITION BY RANGE (time_id)
  
  
  list：
+ CREATE TABLE list_sales
+   ( prod_id        NUMBER(6)
+   , cust_id        NUMBER
+   , time_id        DATE
+   , channel_id     CHAR(1)
+   , promo_id       NUMBER(6)
+   , quantity_sold  NUMBER(3)
+   , amount_sold    NUMBER(10,2)
+   )
+PARTITION BY LIST (channel_id)
+ (PARTITION even_channels VALUES (2,4),
+  PARTITION odd_channels VALUES (3,9)
+ ); 
+ 
  
  hash：
  compisite：
