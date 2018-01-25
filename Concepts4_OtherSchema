@@ -64,6 +64,14 @@ PARTITIONS 2;
  分区表的每一个分区都独占一个段。
  表的压缩属性可以为表空间，表，表分区声明。
  
+ 分区索引：
+  local partition index：
+   局部分区索引，只索引该分区。局部分区索引的优点是增加可用性和便于维护。可用性增加是因为只要维护该分区，便于维护是因为当移动分区时，必须要重建或者维护关联的本地索引，
+   CREATE INDEX hash_sales_idx ON hash_sales(time_id) LOCAL;
+   hash_sales 有两个分区，创建局部分区索引时，hash_sales_idx也会有两个分区。
+ 
+ globale partition index：
+   全局分区索引，
  
  compisite：
  
