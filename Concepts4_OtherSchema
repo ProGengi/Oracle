@@ -47,5 +47,23 @@ PARTITION BY LIST (channel_id)
  
  
  hash：
+ CREATE TABLE hash_sales
+   ( prod_id        NUMBER(6)
+   , cust_id        NUMBER
+   , time_id        DATE
+   , channel_id     CHAR(1)
+   , promo_id       NUMBER(6)
+   , quantity_sold  NUMBER(3)
+   , amount_sold    NUMBER(10,2)
+   )
+PARTITION BY HASH (prod_id)
+PARTITIONS 2; 
+ 
+ 如果改变分区的数量，那么数据库将重新分配数据。
+ 即使分区表只有一个分区，也跟普通表不同，因为分区表可以增加分区，而普通表不可以。
+ 分区表的每一个分区都独占一个段。
+ 表的压缩属性可以为表空间，表，表分区声明。
+ 
+ 
  compisite：
  
