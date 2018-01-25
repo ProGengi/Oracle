@@ -69,9 +69,31 @@ PARTITIONS 2;
    局部分区索引，只索引该分区。局部分区索引的优点是增加可用性和便于维护。可用性增加是因为只要维护该分区，便于维护是因为当移动分区时，必须要重建或者维护关联的本地索引，
    CREATE INDEX hash_sales_idx ON hash_sales(time_id) LOCAL;
    hash_sales 有两个分区，创建局部分区索引时，hash_sales_idx也会有两个分区。
+   不可以只给一个分区建立局部索引，只有新增一个分区时，分区索引才会添加到局部分区索引中。同样删除时也是。
+   不可以为全局索引建立bitmap索引。
+   局部分区索引又分为：
+     local prefixed index： 局部前缀索引 
+      分区键作为索引定义的第一列  当查询条件能用到该索引时，能产生分区消除。
+     local noprefixed index: 局部非前缀索引
+       分区键不作为索引定义的第一列 可能不会产生分区消除。
  
  globale partition index：
    全局分区索引，
- 
+ CREATE INDEX time_channel_sales_idx ON time_range_sales (channel_id)
+   GLOBAL PARTITION BY RANGE (channel_id) --这里一定是channel_id
+      (PARTITION p1 VALUES LESS THAN (3),
+       PARTITION p2 VALUES LESS THAN (4),
+       PARTITION p3 VALUES LESS THAN (MAXVALUE));
+  全局分区索引的索引键不一定是分区键，但是索引分区键一定要是索引定义的第一列。索引分区可能指向分区表的几个分区，没有一一对应关系。     
+  
  compisite：
+ 
+ 
+ Views：
+ 
+ 
+ 
+ 
+ 
+ 
  
