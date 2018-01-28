@@ -103,6 +103,8 @@ PARTITIONS 2;
   数据如何访问视图：
    将用户的查询语句与视图的语句相合并。
    
+ Materialized Views(物化视图):
+  
   
  
  
