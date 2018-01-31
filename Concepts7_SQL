@@ -5,3 +5,12 @@
 #
 
 
+DDL:
+ alter,create,drop
+ turncate
+ grant,revoke
+ audit
+ comment
+
+DML:
+ select,update,delete,insert,merge,explain,lock table
