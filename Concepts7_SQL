@@ -51,7 +51,7 @@ optimizer hints：
 processes sql statement:
  1. syntax check
  2. semantic check
- 3. shared pool check -- 检查是否存在该语句的hash值
+ 3. shared pool check -- 检查是否存在该语句的hash值，不仅仅是检查语法相同，同一条sql不同用户执行，hash值也是不同的。
  软解析：可以重用该sql语句，又叫library cache hit.软解析优于硬解析因为，软解析跳过优化跟行选择直接执行。
  硬解析：oracle不能重用该sql。ddl都是硬解析。硬解析阶段，数据库访问library cache 和 data dictionary cache去检查元数据
  
