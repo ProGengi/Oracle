@@ -25,7 +25,7 @@ Optimizer(cost-based optimizer) ：
  2.检查完整性约束以了解更多数据并根据此元数据进行优化
  3.语句转换
  4.优化器目标选择
- 5.选择访问路径
+ 5.选择访问路径  
  6.选择连接顺序
  
  可以不执行sql语句获得执行计划(解释计划)，只有在sql执行过后才能叫查询计划。
@@ -34,5 +34,25 @@ Optimizer(cost-based optimizer) ：
  1.根据访问路径和提示(hint)生成一组潜在的执行计划。
  2.根据每个执行计划算出成本。成本是执行预期计划所需资源的使用率的比例。
  3.选择成本最低的，这个叫做查询计划。
+ 
+ access paths:
+   full table scans 会扫描所有块，只要在高水位线下的，哪怕是空的，也会扫描。
+   rowid scans
+   index scans
+   cluster scans
+   hash scans 
+
+optimizer statistics:包括tables，columns，indexes，system的信息。
+ 使用DBMS_STATS包来修改，导入，导出，删除统计信息。
+ 
+optimizer hints：
+ select /*+ first_rows(25) */ name,id,salary form emp; --只查询前25行。
+ 
+processes sql statement:
+ 1. syntax check
+ 2. semantic check
+ 3. shared pool check -- 检查是否存在该语句的hash值
+ 软解析：可以重用该sql语句，又叫library cache hit.软解析优于硬解析因为，软解析跳过优化跟行选择直接执行。
+ 硬解析：oracle不能重用该sql。ddl都是硬解析。硬解析阶段，数据库访问library cache 和 data dictionary cache去检查元数据
  
  
