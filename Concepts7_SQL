@@ -55,4 +55,6 @@ processes sql statement:
  软解析：可以重用该sql语句，又叫library cache hit.软解析优于硬解析因为，软解析跳过优化跟行选择直接执行。
  硬解析：oracle不能重用该sql。ddl都是硬解析。硬解析阶段，数据库访问library cache 和 data dictionary cache去检查元数据
  
+ Hints：
+  
  
