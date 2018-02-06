@@ -66,4 +66,19 @@ sql row source generation:即执行计划
    4.Data operations such as filter, sort, or aggregation
      数据操作如，过滤，排序，聚集
      
- 
+如何处理DML
+ 1.读一致性
+   使用undo 数据块保证读一致性。
+ 2.数据改变 
+   使用undo 跟redo 来保证数据的一致性。
+   
+如何处理DDL：
+ 如create table test(id number);
+ 会执行下列相关的递归SQL:
+ 1.在执行create之前执行commit
+ 2.确认用户是否有权限
+ 3.确定表存放在哪个表空间中
+ 4.确定表空间的余额充足
+ 5.确定这个名字没有被使用
+ 6.将数据插入到数据字典中
+ 7.成功commit失败rollback
