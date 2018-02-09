@@ -7,7 +7,7 @@
 Data Concurrency and Consistency(数据的并发性和一致性):
  oracle靠多版本的一致性模型和各种类型的锁及事务维持数据的一致性。
 
-Multiversion Read Consistency(多版本读一致性):
+Multiversion Read Consistency(多版本读一致性)的两个特征:
  1.Read-consistent queries(读一致性查询)：
    返回的查询结果是某个时间点的结果。
    脏读(dirty reads)=read uncommmit：
@@ -17,8 +17,17 @@ Multiversion Read Consistency(多版本读一致性):
    对同一个块，读和写不会相互阻塞。
  
  Statement-Level Read Consistency(语句级读一致性)：
-  
- 
- 
- 事务的隔离级别：
-  可串行化(serializability)：
+  Oracle数据库总是强制执行语句级读一致性，它保证单个查询返回的数据被提交并与单个时间点一致。
+  单个SQL语句一致的时间点取决于事务隔离级别和查询的性质：
+  1.在读已提交中，时间点就是打开语句的时候。如果在SCN 1000打开，那么这些语句都将会在SCN 1000打开。
+  2.在可串行化或者只读隔离级别中，时间点就是事务开始的时候。
+  3.在闪回查询中，可以指定任意时间点的查询。
+
+ Transaction-Level Read Consistency(事务级别的读一致性):
+  当用户修改数据时，数据库先创建UNDO段，保存未提交或者最近提交的旧值。
+
+ oracle事务的隔离级别：
+ 1.read commited level(读已提交):
+   默认的事务级别。可避免出现幻读。如果是读已提交级别，那么读取的数据都是提交过的，就不会出现幻读。
+   幻读：事务A读取表a的数据，假设1000000行，在读取的过程中，事务B更改了其中的950000行，并且提交了，当A再次读取的时候，数据变了。
+ 2.serializability()：
