@@ -1,0 +1,24 @@
+#
+#
+#
+#
+#
+
+Data Concurrency and Consistency(数据的并发性和一致性):
+ oracle靠多版本的一致性模型和各种类型的锁及事务维持数据的一致性。
+
+Multiversion Read Consistency(多版本读一致性):
+ 1.Read-consistent queries(读一致性查询)：
+   返回的查询结果是某个时间点的结果。
+   脏读(dirty reads)=read uncommmit：
+   会话A更改表1的一列，但是没有commit，这时会话B读取表1的该列，然后会话Arollback了，这时会话B就是脏读。
+   脏读会破坏数据完整性，违反外键，忽略唯一性约束。
+ 2.Nonblocking queries（非阻塞查询）:
+   对同一个块，读和写不会相互阻塞。
+ 
+ Statement-Level Read Consistency(语句级读一致性)：
+  
+ 
+ 
+ 事务的隔离级别：
+  可串行化(serializability)：
