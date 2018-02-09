@@ -25,6 +25,16 @@ Multiversion Read Consistency(多版本读一致性)的两个特征:
 
  Transaction-Level Read Consistency(事务级别的读一致性):
   当用户修改数据时，数据库先创建UNDO段，保存未提交或者最近提交的旧值。
+  数据库中可以存在多个相同数据的版本，它们都在不同的时间点上存在。数据库可以在不同的时间点上使用快照数据提供读取的数据一致的观点，使非阻塞查询。
+  oracle使用SCN机制去保证事务的顺序。
+  一致读克隆(CR clone)：数据库复制当前数据块到新的buffer中，用undo块重建数据的前一个版本。
+
+
+ANSI/ISO Transaction Isolation Levels：
+ 1.脏读：一个事务读取另一个事务没有提交的数据。
+ 2.不可重复读(Nonrepeatable (fuzzy) reads)：一个事务读取过程中，另一个事务改变了数据。
+ 3.幻读(Phantom reads):
+ 
 
  oracle事务的隔离级别：
  1.read commited level(读已提交):
