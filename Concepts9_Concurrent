@@ -57,5 +57,9 @@ ANSI/ISO Transaction Isolation Levels：
    跟串行化较为相似，但是不允许用户修改数据，除了SYS。
  
  
+ lock mechanism(锁机制)：
+  行或者表上的独占锁只会有一个，但是共锁可以有许多个。
+  1.exclusive locks(独占锁):
+  2.share locks(共享锁):
  
  
