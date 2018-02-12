@@ -59,6 +59,7 @@ ANSI/ISO Transaction Isolation Levels：
  
  lock mechanism(锁机制)：
   行或者表上的独占锁只会有一个，但是共锁可以有许多个。
+  当修改一行时，会给该行一个独占锁，如果有另一个事务要修改这行，会阻塞。
   1.exclusive locks(独占锁):
   2.share locks(共享锁):
  
