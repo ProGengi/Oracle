@@ -63,6 +63,9 @@ ANSI/ISO Transaction Isolation Levels：
   1.exclusive locks(独占锁):
   2.share locks(共享锁):
  
+ Lock Conversion and Escalation(锁的转换和升级):
+ oracle 会自动将低等级的锁转换为高等级的锁。
+ 
  
  
  
