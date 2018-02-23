@@ -65,7 +65,9 @@ ANSI/ISO Transaction Isolation Levels：
  
  Lock Conversion and Escalation(锁的转换和升级):
  oracle 会自动将低等级的锁转换为高等级的锁。
+ oracle 从不将锁升级。锁升级会大大提高死锁的概率。
  
- 
+ lock duration (锁的持续时间):
+  锁是自动释放的。
  
  
