@@ -68,6 +68,18 @@ ANSI/ISO Transaction Isolation Levels：
  oracle 从不将锁升级。锁升级会大大提高死锁的概率。
  
  lock duration (锁的持续时间):
-  锁是自动释放的。
+  锁是自动释放的。在commit或者rollback之后会自动释放锁。
+  
+ 死锁(dead lock)：
+  
+  
+ 锁的种类(categories)：
+ DML
+ DDL
+ SYSTEM
+ 
+ 
+ 
+ 
  
  
