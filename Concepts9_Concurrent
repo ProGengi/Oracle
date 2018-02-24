@@ -65,7 +65,7 @@ ANSI/ISO Transaction Isolation Levels：
  
  Lock Conversion and Escalation(锁的转换和升级):
  oracle 会自动将低等级的锁转换为高等级的锁。
- oracle 从不将锁升级。锁升级会大大提高死锁的概率。
+ oracle 从不自动将锁升级。锁升级会大大提高死锁的概率。
  
  lock duration (锁的持续时间):
   锁是自动释放的。在commit或者rollback之后会自动释放锁。
@@ -75,6 +75,21 @@ ANSI/ISO Transaction Isolation Levels：
   
  锁的种类(categories)：
  DML
+  row lock(TX)： 主要用来防止多个用户修改同一行。
+  table lock(TM)：当insert，update，delete，select..for update,merge时会获得表锁。
+   表锁的各种模式：
+    ROW SHARE(RS): 
+     也叫subshare table lock(ss).表示持有该锁的事务已经锁定表中的行，准备更新他们。是所有模式中并行度最高的。
+    Row exclusive table lock (RX)
+     也叫subexlusive table lock 通常表示事务正在更新行。或者select for update.允许其他事务在该表上进行修改。
+    share table lock （S）
+     多个事务可以拥有该锁。
+    share row exculsive table lock （SRX）
+     也叫share-subexclusive table lock (SSX)。只有一个事务可以获得某张表上的SSX，但是其他事务可以查询这张表。
+    exclusive table lock （X）
+     最严格的锁，禁止其他任何锁与他共存。
+    
+     
  DDL
  SYSTEM
  
