@@ -89,8 +89,12 @@ ANSI/ISO Transaction Isolation Levels：
     exclusive table lock （X）
      最严格的锁，禁止其他任何锁与他共存。
     
-     
+   lock and forgien keys：
+    如果外键上没有索引，那么子表会频繁的被锁定，容易发生死锁，会使并行度大大下降，所以最好在外键上创建索引。
+   
  DDL
+   data dictionary (DDL) lock
+   
  SYSTEM
  
  
