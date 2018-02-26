@@ -14,3 +14,7 @@
 事务的开始与结束。
  开始于DML语句.
  结束于commit,rollback.或者DDL语句
+
+
+SCN: system change number 是不重复递增序列
+ 在修改之前先记录SCN，避免不必要的重做。
