@@ -4,3 +4,9 @@
 #
 #
 
+when create database generates files:
+ 1.Data files and temp files
+ 2.control files
+ 3.online redo log files
+ 
+ 
