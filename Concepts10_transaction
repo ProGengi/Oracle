@@ -34,5 +34,29 @@ SCN: system change number 是不重复递增序列
    3.修改的数据会被存到DB BUFFER中，在commit之后，数据会写到磁盘。
    4.修改行会被锁定。
  
+ savepoints：
+  把长事务划分成几个小的。
+  rollback to savepoint 发生的事：
+   1.只将savepoint之后的语句rollback
+   2.所有的子savepoint将会丢失
+   3.会释放相关的锁
+  
+ Enqueued Transactions（排队事务）:
+  session1改emp中jane的sal，在没提交或者rollback之前，这时session2也改这个人的sal，就会发生阻塞，session2就是排队事务。
+  
+rollback：
+ 1.根据相关的undo段，还原数据
+ 2.释放所有相关的锁
+ 3.擦除所有的savepoint
+ 4.结束事务
  
+commit：
+ 1.产生一个SCN
+ 2.lgwr将log写进online redo log
+ 3.释放锁
+ 4.擦除所有的savepoint
+ 5.commit清除
+ 6.结束事务
+ commit的时间长短与修改的内容的多少无关，跟lgwr的磁盘I/O有关。   
+   
  
