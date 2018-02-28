@@ -54,3 +54,33 @@ online and offline datafile：
  data file header：包括的元数据有，文件的大小，检查点SCN.
  每个头文件包含一个绝对文件号和一个相对文件号。绝对文件号唯一标识数据库中的数据文件。相对文件号唯一标识表空间中的数据文件。
  
+control files：
+ 一个数据库只有一个控制文件，但是可以有多个备份。
+ 控制文件是用来找到数据文件和管理数据库的根文件。
+ 控制文件包括的内容：
+  1.The database name and database unique identifier (DBID)
+  2.The time stamp of database creation
+  3.Information about data files, online redo log files, and archived redo log files
+  4.Tablespace information
+  5.RMAN backups
+ 控制文件用于以下目的：
+  1.包含数据库所需要的数据文件，在线重做日志文件等。
+  For example, when an administrator adds, renames, or drops a data file or online redo log file, the database updates the control file to reflect this change.
+  2.它包含在数据库未打开时必须访问的元数据。
+ 
+ If a control file becomes unusable, then the database instance fails when it attempts to access the damaged control file. 
+ When other current control file copies exist, the database can be remounted and opened without media recovery. 
+ If all control files of a database are lost, however, then the instance fails and media recovery is required. 
+ Media recovery is not straightforward if an older backup of a control file must be used because a current copy is not available.
+ 
+ 控制文件的相关信息都可以在V$中找到。
+ 
+ 
+ Online Redo Log
+  after an instance failure the online redo log files enable Oracle Database to recover committed data not yet written to the data files.
+  数据库将每个事务同步到redo log buffer，将来redo log buffer 会写到日志文件。
+  Oracle数据库至少需要两个文件以保证一个随时可写而另一个被归档（如果数据库是ARCHIVELOG模式）。
+  同一时间只会有一个日志文件被写，这个文件叫做current online redo log file.
+  日志文件的切换发生在一个写完要切换到另一个文件的时候。
+  
+  
