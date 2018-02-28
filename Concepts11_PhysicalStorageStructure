@@ -4,9 +4,49 @@
 #
 #
 
-when create database generates files:
+files generates when create database:
  1.Data files and temp files
  2.control files
  3.online redo log files
  
+mechanism of storing database files:
+ 1.Oracle Automatic Storage Management (Oracle ASM)
+ 2.Operating system file system
+ 3.Raw device(裸设备)
+ 4.Cluster file system
+ 
+数据库可以采用混合的方式存储数据库文件。
+
+ASM:
+ 
+ 
+data file：
+ 每个数据库至少有一个数据文件。
+ 
+ 表空间跟数据文件关系：
+  1.表空间可以有多个数据文件。
+  2.一个段可以跨越一个或者多个数据文件，但是不可以跨越多个表空间。
+  3.数据库必须要有的两个表空间：system sysaux。当创建数据库时，自动为system表空间分配一个datafile。
+    system表空间中包含data dictionary。
+
+permanment and temporary datafile
+permanment datafile：
+temporary datafile：存储会话期间的模式对象。
+temporary tablespace 中有temporary datafile 在hash，sort等操作时使用。当内存空间不足时，临时文件也存储结果数据。
+
+永久数据文件与临时文件的差异：
+1.永久的数据对象不会存到临时文件中。
+2.临时文件的模式被设置成nologging，也就意味着没有redo log。
+3.不能将临时文件设置为只读
+4.不能用alter database 语句来创建tempfile
+5.When you create or resize temp files, they are not always guaranteed allocation of disk space for the file size specified。
+  On file systems such as Linux and UNIX, temp files are created as sparse files. 
+  In this case, disk blocks are allocated not at file creation or resizing, but as the blocks are accessed for the first time.
+  当您创建或调整临时文件时，它们并不总是保证指定文件大小的磁盘空间分配。
+6.临时文件的相关信息在dba_temp_files和dynamic performance view V$tempfile中。  
+  
+online and offline datafile：
+ 每个数据文件都是online(可用)或者offline(不可用)的。offline datafile 不可以访问。
+ 使datafile offline的原因有很多：脱机备份，重命名数据文件，块损坏。当数据库不能对数据文件进行写操作时，会自动将数据文件offline。
+ 表空间也是有online，offline的，当给一个datafile置为offline后，所在的表空间还是online。通过将表空间本省不可用，来让所有数据文件不可用。
  
