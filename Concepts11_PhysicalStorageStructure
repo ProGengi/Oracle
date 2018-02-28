@@ -50,3 +50,7 @@ online and offline datafile：
  使datafile offline的原因有很多：脱机备份，重命名数据文件，块损坏。当数据库不能对数据文件进行写操作时，会自动将数据文件offline。
  表空间也是有online，offline的，当给一个datafile置为offline后，所在的表空间还是online。通过将表空间本省不可用，来让所有数据文件不可用。
  
+数据文件的结构：
+ data file header：包括的元数据有，文件的大小，检查点SCN.
+ 每个头文件包含一个绝对文件号和一个相对文件号。绝对文件号唯一标识数据库中的数据文件。相对文件号唯一标识表空间中的数据文件。
+ 
