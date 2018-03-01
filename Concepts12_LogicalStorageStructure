@@ -4,4 +4,10 @@
 #
 #
 
-
+logical units：block，extent，segment，tablespace
+ 操作系统块组成oracle块，oracle块组成区，区组成段，段组成表空间。
+ 一个表空间中可以有多个数据文件，一个数据文件只能在一个表空间中。
+ 一个段可以在一个表空间的多个数据文件中，一个区只能在一个数据文件中。
+ 
+ 
+ 
