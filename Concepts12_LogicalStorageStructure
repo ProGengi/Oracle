@@ -10,4 +10,4 @@ logical units：block，extent，segment，tablespace
  一个段可以在一个表空间的多个数据文件中，一个区只能在一个数据文件中。
  
  
- 
+database block size : 创建数据库时db_block_size参数指定了数据库块的大小。除了重建数据库，否则块的大小不再改变。
