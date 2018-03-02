@@ -11,3 +11,11 @@ logical units：block，extent，segment，tablespace
  
  
 database block size : 创建数据库时db_block_size参数指定了数据库块的大小。除了重建数据库，否则块的大小不再改变。
+如果创建数据库的时候没有指定DB_BLOCK_SIZE，那么会默认使用操作系统的指定的块的大小。通常是4KB,8KB。
+如果oracle块跟操作系统块不一样大，那么oracle块必须是操作系统块的倍数。
+
+data block format:
+ 1.block overhead:块头，用来管理块自身。
+   Block header：
+   Table directory：
+   Row directory：
