@@ -16,6 +16,9 @@ database block size : 创建数据库时db_block_size参数指定了数据库块
 
 data block format:
  1.block overhead:块头，用来管理块自身。
-   Block header：
-   Table directory：
-   Row directory：
+   Block header：包含块的信息，是什么类型的段，以及磁盘地址。
+   Table directory：在堆表中，这个目录包含表中数据所在的行，一个块可包括多个表的多行。
+   Row directory：这个目录存放表中行的地址。
+
+row format：
+ 
