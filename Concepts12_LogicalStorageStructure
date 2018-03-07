@@ -36,3 +36,24 @@ pctfree：
  
 Extends:
  
+Segements：
+ 几种段的类型：
+  1.table，partition table，table cluster
+  2.LOB，lob partition
+  3.index，index partition
+  4.temporary
+  5.undo segement
+ 每个分区对象都拥有一个独立的段。
+当创建表时，不会立即创建一个表段。只有当用户将数据插入到表中时，才会创建表段。可以避免浪费许多没必要的资源。
+ CREATE TABLE lob_table (my_column NUMBER PRIMARY KEY, clob_column CLOB); --会创建四个段，clob有两个。
+ 表段和索引段不一定占用相同的表空间。
+ 
+ 临时段，当内存不够用时，某些操作可能会使用临时段，比如，排序，hash，merge bitmap。在创建索引段时，先创建临时段，然后再装换为永久段。
+ undo segement 的作用：
+  1.回滚活动的是事务。
+  2.恢复目标事务
+  3.提供读一致性。
+  4.提供某些逻辑闪回操作
+ undo segement 存在undo tablespace中。
+ 多个事务是共享同一个undo segement 的。
+ 
