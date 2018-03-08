@@ -60,3 +60,21 @@ Segements：
 HWM(high water mark):高水位线
  全表扫描时会读取高水位线以下的所有块。
  
+
+tablespace：
+ 一个表空间有一个或者多个数据文件或者临时文件。一个表空间有一个或多个段组成。
+ 数据库至少有两个表空间，system和sysaux。
+ 
+ 表空间的分类：
+  1.system
+    1.主要管理数据字典
+    2.含数据管理的表和视图
+    3.编译过的存储对象，过程，函数，触发器等
+  2.sysaux
+    是system表空间的补充。
+  3.undo
+  4.temp
+  5.formal
+  
+  
+  
