@@ -57,3 +57,6 @@ Segements：
  undo segement 存在undo tablespace中。
  多个事务是共享同一个undo segement 的。
  
+HWM(high water mark):高水位线
+ 全表扫描时会读取高水位线以下的所有块。
+ 
