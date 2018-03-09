@@ -18,3 +18,7 @@ SGA的作用：
   Also, the SID is used by default to locate the parameter file, which is used to locate relevant files such as the database control files.
 
 
+
+
+checkpoint：
+  
