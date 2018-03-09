@@ -4,3 +4,17 @@
 #
 #
 
+Instance:
+ 实例是内存组成的。
+ 数据库是数据文件组成的。
+
+SGA的作用：
+ 1.存储sql的执行计划
+ 2.缓存从磁盘中读取的数据
+ 3.在写进在线重做日志之前缓存redo数据
+ 
+ Oracle System Identifier (SID)：
+  On UNIX and Linux, Oracle Database uses the SID and Oracle home values to create a key to shared memory. 
+  Also, the SID is used by default to locate the parameter file, which is used to locate relevant files such as the database control files.
+
+
