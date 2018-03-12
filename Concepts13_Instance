@@ -18,7 +18,48 @@ SGA的作用：
   Also, the SID is used by default to locate the parameter file, which is used to locate relevant files such as the database control files.
 
 
+instance startup and shutdown
+ shutdown》》》》nomount》》》》》mount》》》》open
+ phase 1：
+ Instance started without mounting database
+ The instance is started, but is not yet associated with a database.
+ 寻找参数文件(parameter file)以初始化参数，如果没找到需要用户指定spfile或者pfile startup
+ 分配SGA，启动进程
+ 
+ phase 2：
+ Database mounted
+ The instance is started and is associated with a database by reading its control file . 
+ The database is closed to users.
+ 从控制文件中获得数据文件和在线重做日志文件。
+ 如果cluster_database 参数是false那么只能有一个实例打开数据库。如果是ture那么允许多个实例打开数据库。
 
+
+
+ phase 3：
+ Database open
+ The instance is started and is associated with an open database. 
+ The data contained in the data files is accessible to authorized users.
+ 获取undo 表空间
+ 打开在线重做日志文件
+ 
+只读模式：
+ 不能在数据文件和在线重做日志文件中进行写操作。
+ 
 
 checkpoint：
+  作用：
+   1.减少实例或者介质失败时恢复的时间
+   2.确保脏块规则地写进数据块
+   3.确保已提交的数据在shutdown时写进磁盘
   
+  检查点的类型：
+   1. thread checkpoint(线程检查点)：
+      发生的情况：
+       1.一致的数据库关闭 
+       2.ALTER SYSTEM CHECKPOINT 语句 
+       3.在线重做日志切换
+       4.ALTER DATABASE BEGIN BACKUP 语句
+   2.Tablespace and data file checkpoints
+     
+   3.Incremental checkpoints(增量检查点)
+   
