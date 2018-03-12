@@ -33,8 +33,6 @@ instance startup and shutdown
  从控制文件中获得数据文件和在线重做日志文件。
  如果cluster_database 参数是false那么只能有一个实例打开数据库。如果是ture那么允许多个实例打开数据库。
 
-
-
  phase 3：
  Database open
  The instance is started and is associated with an open database. 
@@ -44,7 +42,16 @@ instance startup and shutdown
  
 只读模式：
  不能在数据文件和在线重做日志文件中进行写操作。
- 
+
+shutdown：
+ modes：
+                       abort      immediate   transactional  normal
+允许新的连接              no         no            no           no
+等待直到当前会话完成       no         no            no           yes
+等待直到当前事务完成       no         no            yes          yes
+执行检查点并关闭文件       no         yes           yes          yes
+
+当其他关闭数据库的命令都没有用时，可以使用shutdown abort.这是关机最快的
 
 checkpoint：
   作用：
