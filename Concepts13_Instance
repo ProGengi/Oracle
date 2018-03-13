@@ -51,7 +51,16 @@ shutdown：
 等待直到当前事务完成       no         no            yes          yes
 执行检查点并关闭文件       no         yes           yes          yes
 
-当其他关闭数据库的命令都没有用时，可以使用shutdown abort.这是关机最快的
+当其他关闭数据库的命令都没有用时，可以使用shutdown abort.这是关机最快的，因为不要将打开的数据文件设置检查点，但也是开机最慢的，因为要实例恢复。
+immediate ： 事务被终止，未提交的被回滚。
+transactional： 等待当前事务结束
+normal ： 默认的关闭模式，等待所有连接的用户断开连接。
+
+正常关闭数据库所做的事：
+ 将SGA中的数据写进到数据文件和在线重做日志文件。然后将online data file 跟online redo log file置为offline。
+非正常关闭数据库做的事：
+ 非正常关闭就不会将数据写进数据文件和日志文件了。随后打开数据库时会自动恢复实例。
+
 
 checkpoint：
   作用：
@@ -69,4 +78,7 @@ checkpoint：
    2.Tablespace and data file checkpoints
      
    3.Incremental checkpoints(增量检查点)
+   
+  Instance recovery：
+   当先前关闭数据库不一致时，再次打开数据库时就会自动启动实例恢复进程。
    
