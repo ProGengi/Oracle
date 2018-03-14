@@ -4,3 +4,12 @@
 #
 #
 
+
+SGA(system global area) 全局共享的
+
+ 
+PGA(process global area) 非共享
+ 是一个内存堆，包含与会话相关的变量，绑定变量什么的。
+
+UGA
+
