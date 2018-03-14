@@ -104,4 +104,32 @@ checkpoint：
     数据库名字，位置，控制文件，数据块大小，undo表空间等
   2.高级
  
+ server parameter file：
+  只有一个，并且在数据库主机上。
+  不能被数据库以外的其他应用读写。
+  是二进制文件不能用文本编辑。
+  任何参数的修改都可以在启动或者关闭时持久存在。
+  
+  spfile是由pfile 用 create spfile 语句得到的。也可以直接从DBCA得到。
+  
+  Text Initialization Parameter Files = pfile：
+  在启动或者关闭数据库时，需要每个客户端上有pfile。
+  是文本文件
+  数据库只能读取pfile不能编辑，如果要编辑只能用文本编辑器编辑。
+  用alter system修改参数只能在当前实例生效，如果想永久生效需要手动修改pfile。
+  
+静态修改参数与动态修改参数的区别：
+ 动态只是在当前实例中生效，重启数据库之后不生效，因为不会写到参数文件。
+ 静态修改需要重启数据库才能生效。
+ 
+ later system set .. scope = memory/spfile/both
+ memory :只在当前实例中生效，重启后无效
+ spfile :只在重启之后生效，当前无效
+ both   :当前实例生效，重启之后也生效(default)
+ 
+ 
+Diagnostic Files(诊断文件):
+ 
+ 
+ 
  
