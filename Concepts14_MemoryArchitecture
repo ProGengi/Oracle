@@ -5,11 +5,20 @@
 #
 
 
-SGA(system global area) 全局共享的
-
- 
 PGA(process global area) 非共享
  是一个内存堆，包含与会话相关的变量，绑定变量什么的。
-
-UGA
+ PGA还可以分成多个子结构
+  sql工作区：包括排序区(排序时使用)，hash(hash连接时就使用hash区)，bitmap merge area(位图合并区)。
+  会话内存：
+  私有sql区：运行区，就是保存sql执行时的相关信息，比如sql返回的行数。保持一致性区，包含绑定变量的值。只有在游标关闭的时候才是空闲的。
+  
+SGA(system global area) 全局共享的 ：
+ 1.Database Buffer Cache 
+   存储数据块的数据
+ 2.Redo Log Buffer
+ 3.Shared Pool
+ 4.Large Pool
+ 5.Java Pool
+ 6.Streams Pool
+ 7.Fixed SGA
 
