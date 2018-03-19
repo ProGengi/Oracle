@@ -14,7 +14,8 @@ PGA(process global area) 非共享
   
 SGA(system global area) 全局共享的 ：
  1.Database Buffer Cache 
-   存储数据块的数据
+   存储数据块的数据，数据更新或者修改之前，会把数据从数据文件中复制到数据库缓冲区缓存中，然后再返回给用户或者修改数据。
+   这样可以从内存中读取数据时效率会比从磁盘上高。
  2.Redo Log Buffer
  3.Shared Pool
  4.Large Pool
