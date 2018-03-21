@@ -27,7 +27,18 @@ SGA(system global area) 全局共享的 ：
     
     
  2.Redo Log Buffer
+   记录数据库的变化。
+   LGWR是顺序得写入数据库，而DBWn是零散地写入。零散写要比顺序写慢。
+   
  3.Shared Pool
+   存储SQL,PL/SQL,data dictionary，system parameter。
+   分类：
+   1.库缓存 存储执行的SQL或者PL/SQL语句。
+     1.共享SQL区
+       第一次出现的sql，以及解释计划。
+     2.私有SQL区
+   2.数据字典缓存
+   3.结果缓存
  4.Large Pool
  5.Java Pool
  6.Streams Pool
