@@ -47,6 +47,8 @@ SGA(system global area) 全局共享的 ：
    语句并行中使用的消息队列
    RMAN中的slave
  5.Java Pool
+   存储java 对象
  6.Streams Pool
+   存储缓冲消息队列，为oracle流专用。除非手动指定，否则大小0，流池的大小会自动根据oracle的需要增长。
  7.Fixed SGA
-
+   存储内部进程需要访问的数据库与实例的相关信息。不可以手动修改。
