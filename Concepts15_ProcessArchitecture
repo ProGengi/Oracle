@@ -5,6 +5,11 @@
 #
 
 client process:
+  SELECT SID, SERIAL#, PADDR FROM V$SESSION WHERE USERNAME = USER;
+
+server process：
+  
+Background process：
  
  
  
