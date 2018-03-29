@@ -10,6 +10,19 @@ client process:
 server process：
   
 Background process：
+ --查询启动的后台进程
+ SELECT PNAME FROM   V$PROCESS 
+ WHERE  PNAME IS NOT NULL 
+ ORDER BY PNAME;
  
- 
- 
+PMON
+SMON
+DBWn
+LGWR
+CKPT
+MMON
+RECO
+
+Process Monitor Process (PMON):
+ 监视其他进程，
+
