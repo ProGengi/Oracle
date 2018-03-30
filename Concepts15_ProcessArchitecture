@@ -20,7 +20,6 @@ SMON
 DBWn
 LGWR
 CKPT
-MMON
 RECO
 
 Process Monitor Process (PMON):
@@ -36,3 +35,37 @@ database writer process (DBWn)：
  DBWn将修改过的buffer写入到磁盘。默认只有一个写进程，DBW0，如果写修改数据比较多，可以设置额外的DBWn，DBW1-DBW9 DBWa-DBWj.
  将脏块写到磁盘的情况：
   1.没有可用的新块。
+  2.定期将检查点之前数据写进磁盘，用户执行checkpoint之前DBWn会将数据写进磁盘。
+  
+  因为更新的块都散列在磁盘上，所以，一次更新更多的块的效率会比一个一个更新的效率高。
+  
+log writer process(LGWR):
+ 将日志缓冲区的数据写进日志文件。
+ LGWR写数据的情况：
+ 1.commit a transaction
+ 2.在线重做日志的切换 (switch)
+ 3.上次写入到磁盘已经过去三秒
+ 4.redo log buffer 已经三分之一或者数据量达到1M
+ 5.DBWn将要把数据写到磁盘之前
+ 
+通常写得足够块，以保证 redo log buffer有剩余空间。在commit之前可以将redo buffer 写到日志文件中，但在事务commit之后，redo就变成永久的了。
+group commit：
+ 一个用户commit，LGWR会将redo buffer数据写进磁盘，在写的过程中，又有另一个用户commit了，这就要等先前的LGWR完成才能将redo buffer数据写进磁盘。
+ 完成之后，LGWR会将后面未提交的事务的重做数据一次性写到磁盘，这样就减少了磁盘I/O并提高了性能。如果commit比较频繁，那么每一个LGWR可以包含多个提交记录。
+
+如果日志文件不可访问，LGWR会自动访问同一组中的其他日志文件，并记录到告警文件中。
+
+checkpoint process(CKPT):
+ 检查点更新控制文件，将检查点的信息写到数据文件的头块，并通知DBWn将数据写进磁盘。
+ 检查点信息包括：检查点位置，SCN，在线重做日志文件的恢复位置。
+ 
+recovery process(RECO):
+ 在分布式数据库中，reco自动解决分布式事务失败的问题。
+ 
+ 
+optional backgound process(可选的后台进程)：
+ archiver process (ARCn):
+  在日志切换的时候，将在线重做日志文件复制到离线存储。
+  只有在归档模式下，才会有归档进程。
+  
+  
