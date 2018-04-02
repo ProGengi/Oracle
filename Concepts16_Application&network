@@ -8,3 +8,7 @@
 client:SQL*Plus VBC,这种通过用户来访问数据库的
 server:运行oracle数据库软件，并分享数据，处理函数的
 客户端应用和数据库可以在同一个物理机上。
+分布式处理环境下的C/S结构的优点：
+
+ client ---> application server ----> database server
+ 
