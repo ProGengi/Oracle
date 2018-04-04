@@ -4,3 +4,42 @@
 #
 #
 
+privilege:
+ 1.system privilege:
+   例如create user，create system
+ 2.object privilege:
+   例如查询表
+ 
+ 角色(role)是一堆权限的集合。
+ 
+ Authentication(认证)：
+  authentication methods：
+  1.authentication by database：
+  2.authentication by operate system：
+ 
+Encryption(加密)：
+ 
+ 
+High availability：
+ oracle提供高可用是为了减少停机时间(downtime),非正常停机时间可由以下情况引起：
+  1.Site Failures(网站故障)
+  2.电脑故障
+    解决办法：RAC,RESTART,recovery
+  3.存储故障
+    解决办法： ASM,BACKUP AND recovery
+  4.Data Corruption(数据损坏)：
+     解决办法：Oracle Hardware Assisted Resilient Data 
+  5.人为错误
+    解决办法：控制访问，flashback
+  
+  正常停机时间可由以下情况引起：
+   1.系统和数据库更新
+   2.数据改变
+   3.应用改变
+   
+   
+   
+
+
+
+
