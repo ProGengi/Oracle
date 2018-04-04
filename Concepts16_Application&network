@@ -12,3 +12,17 @@ server:运行oracle数据库软件，并分享数据，处理函数的
 
  client ---> application server ----> database server
  
+ Oracle Networking Architecture：
+  
+ Oracle Net Listener：
+  是监听从客户端过来的连接请求。客户端连接数据库时，需要指定连接哪个实例。
+  单个服务可以识别一个或多个数据库实例，一个数据库实例可以用多个监听器注册服务。
+  服务注册是动态的，不需要在listener.ora中文件中配置。
+  
+  独占服务结构(dedicated server architecture),代表每个客户进程创建的服务器，叫做专属服务器进程。
+  如果客户端程序跟独占服务器程序在同一台机器上，使用进程相互之间的通信方式进行通信。
+  如果客户端程序跟独占服务器程序不在同一台机器上，使用类似网关接口的机制通信。
+  共享服务结构(shared server architecture), 
+  
+  
+ 
