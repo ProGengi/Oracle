@@ -27,3 +27,38 @@ Flashback ：
   );
   
   
+
+
+RMAN：
+ 数据库必须是归档模式才可以备份。否则有可能遇到ORA-19602错误。
+ 
+ archive log list;--查看归档模式
+ select name,log_mode,open_mode from v$database; --查看 实例名，归档模式，启动模式。
+ 
+ 怎样启动到归档模式:
+  1.shutdown immediate
+  2.starup mount
+  3.alter database archivelog;
+  4.alter database open;
+  
+ 关闭归档模式：
+  1.shutdown immediate
+  2.starup mount
+  3.alter database noarchivelog;
+  4.alter database open
+ 
+ rman target / --连接本地数据库
+ rman target sys/channel.. --连接远程数据库
+ rman target / log f:\oracle\logs\rman_log.txt --指定日志文件存放地方，不然就显示到屏幕。
+ 
+ rman备份的类型：
+  1.镜像复制(物理备份)
+    复制数据文件，控制文件，跟操作系统备份一样。
+  2.备份集(逻辑备份)
+    2.1单个备份
+      rman>backup database;
+    2.2批处理
+      RUN{....}
+      将run里的命令作为一个整体，只要一个失败就停止执行。  
+    
+ 
