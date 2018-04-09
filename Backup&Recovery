@@ -56,9 +56,30 @@ RMAN：
     复制数据文件，控制文件，跟操作系统备份一样。
   2.备份集(逻辑备份)
     2.1单个备份
-      rman>backup database;
-    2.2批处理
+      rman> backup database; --被保存到Oracle软件的安装目录下。
+      rman> backup database format 'e:\oracle\backup\bak_%U'; --必须要有这个目录，否则报错。
+      rman> backup tablespace users; --表空间的备份
+      
+      sql> select file_id,file_name form dba_data_files;--查看数据文件的名称
+      rman> backup datafile 'f:oracle\oradata\jssbook\user01.dbf'; --备份数据文件时可以指定数据文件名，也可以指定文件id
+      rmna> backup datafile 1;--指定数据文件id
+      rman> backup current controlfile; --备份控制文件
+      
+      在备份任意文件时都可以顺便备份控制文件：
+      rman> backup database include current contorlfile;
+      当将configure controlfile autobackup on 时，无论备份什么都会备份控制文件。
+      
+      归档文件的备份：
+      rman> backup archivelog all;
+      
+      
+      
+      rman> delete backupset 10; --删除某个备份集，10是list backup of database的BPkey。
+2.2批处理
       RUN{....}
       将run里的命令作为一个整体，只要一个失败就停止执行。  
     
+查看已经创建的备份：
+ list backup of database;
+ list backup of tablespace users;
  
