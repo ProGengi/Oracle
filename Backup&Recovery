@@ -3,3 +3,27 @@
 #
 #
 #
+
+physical backup：
+ 备份数据文件，控制文件。。
+logical backup：
+ 将表结构，行中的数据导出来。
+ 
+ 
+Flashback ：
+ flashback querry：用于检索之前存在过的数据。可以用时间或者SCN来返回之前提交过的数据。
+  
+  SELECT * FROM employees
+  AS OF TIMESTAMP
+  TO_TIMESTAMP('2004-04-04 09:30:00', 'YYYY-MM-DD HH:MI:SS')
+  WHERE last_name = 'Chung';
+  
+  --插入数据
+  INSERT INTO employees (
+  SELECT * FROM employees
+  AS OF TIMESTAMP
+  TO_TIMESTAMP('2004-04-04 09:30:00', 'YYYY-MM-DD HH:MI:SS')
+  WHERE last_name = 'Chung'
+  );
+  
+  
