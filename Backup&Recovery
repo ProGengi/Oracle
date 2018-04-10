@@ -71,6 +71,11 @@ RMAN：
       
       归档文件的备份：
       rman> backup archivelog all;
+      备份初始化参数文件：
+      rman> backup spfile;--通常在备份控制文件的时候，会顺带备份参数文件。
+      
+      备份备份集：
+      rman> backup backupset n/all;
       
       
       
