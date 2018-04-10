@@ -76,14 +76,18 @@ RMAN：
       
       备份备份集：
       rman> backup backupset n/all;
-      
-      
-      
       rman> delete backupset 10; --删除某个备份集，10是list backup of database的BPkey。
 2.2批处理
       RUN{....}
       将run里的命令作为一个整体，只要一个失败就停止执行。  
-    
+
+rman相关的命令：
+ 1.show all;--显示rman默认配置
+ 2.list backup [of datafile/database/controlfile] ;--列出备份信息。
+ 3.delete obsolete;--删除过期备份 delete backup;--删除所有备份集 delete backupset 19;--删除指定备份集 delete expired backup;--删除无效备份
+ 4.report need backup [tablespace system];--查看需要备份的文件 report obsolete;--查看过期备份
+ 5.crosscheck backup;--检查所有备份集 
+   crosscheck 用来检查物理文件是否存在，并且在控制文件或者恢复目录中有匹配记录，那么该对象的状态就是available否则就是expired(无效).
 查看已经创建的备份：
  list backup of database;
  list backup of tablespace users;
