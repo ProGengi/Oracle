@@ -77,6 +77,27 @@ RMAN：
       备份备份集：
       rman> backup backupset n/all;
       rman> delete backupset 10; --删除某个备份集，10是list backup of database的BPkey。
+      
+  增量备份：(0..n,n<=4)
+   rman> backup incremental level = 0 database;
+   增量备份级别：
+    0：就是数据库的完整备份，但是跟普通的完整备份不一样，因为这个有备份策略，普通的没有。
+   增量备份类型：
+    1.差异
+     rman> backup incremental level = 1 cumulative database; 
+    2.累积（默认）
+     rman> backup incremental level = 1 differental database;
+  
+   备份保留策略：
+    1.基于时间
+      rman> configure retention policy to recovery window of N(>0) days;
+      --保留的数据是sysdate - backup checkpoint time >=7;
+    2.基于冗余数量
+      rman> configure retention policy to redundancy n;--如果备份超过了指定数量，rman将废弃最旧的备份。
+    --不需要任何保留策略，当使用report obsolete 或者delete obsolete也不会有记录显示。  
+    rman> configure retention policy to none;
+  
+ 
 2.2批处理
       RUN{....}
       将run里的命令作为一个整体，只要一个失败就停止执行。  
@@ -88,7 +109,4 @@ rman相关的命令：
  4.report need backup [tablespace system];--查看需要备份的文件 report obsolete;--查看过期备份
  5.crosscheck backup;--检查所有备份集 
    crosscheck 用来检查物理文件是否存在，并且在控制文件或者恢复目录中有匹配记录，那么该对象的状态就是available否则就是expired(无效).
-查看已经创建的备份：
- list backup of database;
- list backup of tablespace users;
  
