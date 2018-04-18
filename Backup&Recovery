@@ -110,8 +110,31 @@ run {
       allocate chahenl c2 type disk format 'f:\oracle\backup\cn_%U';
       backup tablespace users;
       }
-复合备份：
+复合备份：--一次备份多个
+ 1.backup copies 3 database;
+ 2.run {
+      set backup copies 2
+      allocate channel c1 type disk format 'f:\oracle\backup\cn_%U';
+      allocate chahenl c2 type disk format 'f:\oracle\backup\cn_%U';
+      backup tablespace users;
+      }
+加密备份：
 
+编写批处理文件： 
+ run{
+  configure retention policy to recovery window of 14 days;
+  configure controfile autobackup on;
+  configure controfile autobackup format for device type disk to 'F:\oracle\backup\..';
+  allocate channel c1 device type disk format '';
+  backup database dkip inaccessible --跳过不可访问文件，例如offline的数据文件
+   plus archivelog filesperset 20 --指定一个备份集中最多能包含的文件
+   delete all input;
+   release channel c1;
+ }
+ allocate channel for maintenance device type disk; --分配通道，但专用于change delete crosscheck并且不在run模块中。
+ crosscheck backupset;
+ delete noprompt obsolete;
+ 
 
 
 rman相关的命令：
@@ -121,4 +144,33 @@ rman相关的命令：
  4.report need backup [tablespace system];--查看需要备份的文件 report obsolete;--查看过期备份
  5.crosscheck backup;--检查所有备份集 
    crosscheck 用来检查物理文件是否存在，并且在控制文件或者恢复目录中有匹配记录，那么该对象的状态就是available否则就是expired(无效).
+
+基础知识：
+ 字符串格式化
+ %a： oracle数据库的activation_id即resetlog_id
+ %c： 备份片的复制数（1-256）
+ %d: 数据库名称
+ %D：当前日期的日，DD
+ %e：归档序号
+ %f：绝对文件编号
+ %F：databaseId+yyyymmdd+OO（1-256的序列）
+ %h：归档日志线程号
+ %I：oracle数据库的DBID
+ %M:当前日期的月，MM
+ %N：表空间名称
+ %n:数据库名称，如果不足8位，会用x填充。
+ %p：备份集中备份片段的编号，从1开始。
+ %s：备份集号
+ %t：备份集时间戳
+ %T：当前时间的年月日格式 YYYYMMDD
+ %u：由备份集编号和建立时间压缩后组成的8字符的名称，可以生成唯一的名称。
+ %U：%u_%p_%c的简写形式，也是默认写法。
+ %Y：当前时间中的年，YYYY
+ 
+ RMAN>configure retention policy clear; --将某个更改过的配置再置为初始值。
+ 
+ 增量备份的工作机制： 
+   差异备份：0，1,2,3,4,5
+   0级最高，相当于全备。
+   
  
