@@ -99,8 +99,20 @@ RMAN：
   
  
 2.2批处理
+      备份设备只有两种，SBT(磁带)和磁盘(DISK)光盘，软盘，硬盘，U盘都是磁盘。
       RUN{....}
-      将run里的命令作为一个整体，只要一个失败就停止执行。  
+      将run里的命令作为一个整体，只要一个失败就停止执行。 
+      allocate channel --手动分配通道，只能在run模块中出现
+      
+在rman中每执行一个backup或者recover都会自动使用一个通道。如果要使用多个通道，直接在run模块中添加。
+run {
+      allocate channel c1 type disk format 'f:\oracle\backup\cn_%U';
+      allocate chahenl c2 type disk format 'f:\oracle\backup\cn_%U';
+      backup tablespace users;
+      }
+复合备份：
+
+
 
 rman相关的命令：
  1.show all;--显示rman默认配置
