@@ -4,6 +4,9 @@
 #
 #
 
+查看表的建表语句：
+select dbms_metadata.get_ddl('TABLE','a') from dual; 
+
 1.table and table clusters
   1.1 schema objects(模式对象)
       一个用户拥有一个同名的模式对象。一个模式对象包含了该用户及相关数据。
