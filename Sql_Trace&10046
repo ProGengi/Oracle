@@ -19,4 +19,13 @@ sql_trace和10046事件是用来跟踪sql的工具，可以跟踪到sql的解析
  8 level 1加上等待事件跟踪
  12 level 1+level 4+level 8
  
+ select sid,serial#,username from v$session where module ='';
+ 
+ exec dbms_system.set_ev(sid,serial#,10046,12(跟踪级别),username);
+ 
+ dbms_utility.get_time()=dbms_utility.get_time 以百分之一秒返回当前时间的整数值。
+ select dbms_utility.get_time() from dual;
+ select dbms_utility.get_time from dual;
+ 
+ 
  
