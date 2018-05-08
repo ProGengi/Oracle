@@ -103,6 +103,6 @@ Index organized tables：
  并行创建索引：
   create index index_name on table(column) tablespace tablespace_name parallel 8;
   alter index index_name noparallel;--并行创建完之后一定要关闭。
- 1700w+数据创建索引要5min. 
+ 1700w+数据创建索引大约要5min. 并行创建只要77sec。
  
  
