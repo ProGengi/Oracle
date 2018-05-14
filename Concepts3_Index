@@ -106,3 +106,11 @@ Index organized tables：
  1700w+数据创建索引大约要5min. 并行创建只要77sec。
  
  
+ hint：
+  强制加索引：
+  select /*+ (t emp_pk)*/  empno from emp t;
+  格式：/*+ (表名 索引名)*/
+  如果表名使用了别名，在hint中也需要使用别名。
+  
+  
+  
