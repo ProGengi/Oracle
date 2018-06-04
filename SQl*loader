@@ -4,6 +4,16 @@
 #
 #
 
+将数据保存到操作系统文件中
+sql> spool test.sql
+sql> select tname||','||tabtype from tab;
+sql> spool off
+sql> exit
+
+root> sqlplus -S user/password @test.sql -- S静默输出
+
+
+
 数据加载
 使用sql*loader需要一个控制文件。控制文件包含描述输入数据的信息，表的信息。
 
