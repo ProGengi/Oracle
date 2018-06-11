@@ -30,6 +30,14 @@ BEGINDATA             //开始加载
 
 sql>sqlldr userid=/ control=test.ctl;
 
+parallel 并不是用多个进程来加载数据，而是不锁住加载表，允许其他直接路径加载。
+所以使用parallel，要将加载的数据文件分为多个。
+
+sqlldr userid=/ control=test.ctl data=data1.txt direct=y parallel=true &
+sqlldr userid=/ control=test.ctl data=data2.txt direct=y parallel=true &
+sqlldr userid=/ control=test.ctl data=data3.txt direct=y parallel=true &
+
+
 FAQ:
 1.加载界定数据(就是数据用引号括起来的如，"shanghai,China")？
  FILEDS TERMINATED BY ',' OPTTIONALLY ENCLOSED BY '"'
