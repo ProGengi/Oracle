@@ -12,7 +12,8 @@ sql> exit
 
 root> sqlplus -S user/password @test.sql -- S静默输出
 
-
+数据导出到文件：
+sqluldr2.exe user=scott/tiger querry='select * from emp' field=07xd table=emp;
 
 数据加载
 使用sql*loader需要一个控制文件。控制文件包含描述输入数据的信息，表的信息。
