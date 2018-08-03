@@ -11,6 +11,10 @@ PGA(process global area) 非共享
   sql工作区：包括排序区(排序时使用)，hash(hash连接时就使用hash区)，bitmap merge area(位图合并区)。
   会话内存：
   私有sql区：运行区，就是保存sql执行时的相关信息，比如sql返回的行数。保持一致性区，包含绑定变量的值。只有在游标关闭的时候才是空闲的。
+  PGA的主要作用：
+  1.存储用户的链接信息
+  2.存储用户的权限信息
+  3.排序
   
 SGA(system global area) 全局共享的 ：
  1.Database Buffer Cache 
@@ -43,6 +47,16 @@ SGA(system global area) 全局共享的 ：
      存储数据库相关，结构，用户等信息。
    3.服务器结果缓存
      存储sql结果，pl/sql结果。客户端结果缓存是存在客户端的。如果数据库修改了数据或者元数据，数据库数据库会自动将这些缓存的数据失效。
+     
+   硬解析：
+   1、语法检查(syntax check): 检查此sql的拼写是否语法。
+   2、语义检查(semantic check): 诸如检查sql语句中的访问对象是否存在及该用户是否具备相应的权限。
+   3、对sql语句进行解析(prase): 利用内部算法对sql进行解析，生成解析树(parse tree)及执行计划(execution plan)。
+   4、执行sql，返回结果(execute and return)
+
+   软解析：比硬解析少了步骤三。
+   在共享池中，每条sql解析完之后都有一个hash值。如果该sql的hash值存在即进行软解析，否则硬解析。       
+     
  4.Large Pool
    语句并行中使用的消息队列
    RMAN中的slave
@@ -52,3 +66,14 @@ SGA(system global area) 全局共享的 ：
    存储缓冲消息队列，为oracle流专用。除非手动指定，否则大小0，流池的大小会自动根据oracle的需要增长。
  7.Fixed SGA
    存储内部进程需要访问的数据库与实例的相关信息。不可以手动修改。
+
+对sga影响较大的参数：
+java_pool_size：控制java池的大小
+shared_pool_size:控制共享池的大小
+large_pool_size:控制大池的大小
+db_*_cache_size：共8个共享cache_size参数，控制各个可用缓冲区缓存的大小。
+log_buffer：控制重做缓冲区的大小
+sga_target:用于sga自动内存管理
+sga_max_size:用于控制数据库启动并运行时sga可以达到的最大大小。   
+   
+   
