@@ -24,12 +24,15 @@ RECO
 
 Process Monitor Process (PMON):
  监视其他进程，或者当其他进程异常终止时执行恢复。也负责清理数据库高速缓存和客户端正在使用的资源。
+ 比如当执行某条更新语句，还没提交时，进程崩溃了，PMON会自动回退。
+ 当LGWR崩溃时，PMON会自动停止实例。
  同样登记oracle net listener的相关信息。
 
 system monitor process(SMON):
  负责各种系统级的清理工作：
-  1.实例恢复 (instance recovery)
+  1.重点工作是实例恢复 (instance recovery)
   2.清理未使用的临时段
+  
 
 database writer process (DBWn)：
  DBWn将修改过的buffer写入到磁盘。默认只有一个写进程，DBW0，如果写修改数据比较多，可以设置额外的DBWn，DBW1-DBW9 DBWa-DBWj.
