@@ -15,3 +15,48 @@ oracle中事务的开始与结束
 
 ORA-01555：snapshot too old
 undo段内的信息被覆盖，就会收到ORA-01555错误。
+
+
+并发控制是数据库提供的函数集合，允许多个同时访问和修改数据。
+
+事务隔离级别
+脏读(dirty read):能读取到的未提交的数据。
+不可重复读(nonrepeatable):就是在1时刻读到的数据到2时刻就没了。
+幻象读(phantom read):在1时刻读到的数据，在2时刻又多了满足条件的数据，即在1时刻到2时刻之间，又插入了数据行。
+
+
+ 隔离级别                 脏读      不可重复     幻读
+ read UNCOMMITTED         Y          Y           Y
+ READ COMMITTED                      Y           Y
+ REPEATABLE  READ                                Y
+ SERIALIZABLE
+ READ ONLY(只有oracle提供)
+ Oracle 支持的两种隔离级别是 read committed(读已提交) 和 serializable(可串行化)。
+ read committed 是指事务只能读取数据库中已经提交的数据。(是oracle的默认模式)
+ 
+自治事务(autonomous transaction)
+ 可以独立于父事务提交或回滚。(即使父事务失败了，也不影响子事务的提交或回滚)
+
+-------------------------------------------------------------------------
+ create or replace procedure autonomous_insert
+ as
+ pragma autonomous_transaction
+ 
+ begin 
+ insert into t values('A');
+ end;
+
+ create or replace procedure Nonautonomous_insert
+ as
+ begin
+ insert into t values('b');
+ end;
+ 
+ begin 
+ insert into t values ('c');
+ autonomous_insert;
+ rollback;
+ end;
+ 
+ 查询结果为：A
+ ---------------------------------------------------------------------------
