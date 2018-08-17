@@ -78,6 +78,18 @@ tablespace：
     将数据存储在临时文件中，
   5.formal(用户表空间)
     
+  创建普通表空间：
+  create tablespace TBL_TEST
+  datafile 'E:\Oracle\ora11\TBL_TEST.DBF' 100M
+  extent management local
+  segment space management auto;
+  
+  创建临时表空间：
+  create temporary tablespace
+  tempfile 'E:\Oracle\ora11' 100M
+  
+  
+  
   
   
   
