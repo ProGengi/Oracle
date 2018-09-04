@@ -31,28 +31,37 @@ CREATE INDEX employee_idx2 ON employees (job_id, last_name);
    B-tree(balance tree)索引的结构：分支块用来查询，叶子块用来存储数据。上层分支块包含下层分支块的索引。
    叫平衡树的原因是，所有叶子块都在同一高度。树的高度是从根节点到叶子节点所访问块的数量。
    
-   index scan 索引扫描：
-   索引扫描的I/O次数就是B-tree的高度。
-   如果sql语句只检索索引列，那么就直接从索引中取出数据，而不需要从表中读取。如果还有其他的列，oracle使用rowid查找表中的行，这就是回表。
-   
-   full index scan 全索引扫描：
-   
-   Fast Full Index Scan 快速全索引扫描，是全表扫描的替代：
-   也是一种全索引扫描，按照特定的顺序读取数据块。
-   
-   Index Range Scan 索引范围扫描(例如：WHERE last_name LIKE 'A%')：
-   An index range scan is an ordered scan of an index that has the following characteristics:
+index scan 索引扫描：
+索引扫描的I/O次数就是B-tree的高度。
+如果sql语句只检索索引列，那么就直接从索引中取出数据，而不需要从表中读取。如果还有其他的列，oracle使用rowid查找表中的行，这就是回表。   
+索引扫描的类型：
+ 索引范围扫描：
+   当谓语中包含将返回一定范围数据的条件时，就会选用索引范围扫描。所指定的条件可以是>,<,like,between,甚至=，但是范围越大，就越可能全表扫描。
+      An index range scan is an ordered scan of an index that has the following characteristics:
       1. One or more leading columns of an index are specified in conditions. --在条件中指定引导列
          A condition specifies a combination of one or more expressions and logical (Boolean) operators and returns a value of TRUE, FALSE, or UNKNOWN.
          --一个条件指定一个或者多个表达式和逻辑（布尔）运算符的组合，并返回true、false或未知值。如 salary>2000.
-      2. 0, 1, or more values are possible for an index key.
-   
-   Index Unique Scan 索引唯一扫描：
-   当谓语使用等号运算符引用唯一索引键上的列时，数据库执行唯一扫描。
-   SELECT * FROM   employees WHERE  employee_id = 5;
+      2. 0, 1, or more values are possible for an index key. 
+      
+索引唯一扫描 Index Unique Scan：
+   在谓语中使用unique或者primarykey作为条件时，就会选用索引唯一扫描。能够保证某个特定的值能够返回一行。
+      SELECT * FROM   employees WHERE  employee_id = 5;
    找到要的值就不会继续往下找了。
    
-   Index Skip Scan 索引跳跃扫描：
+ 索引全扫描 full index scan： 
+   将会扫描索引结构中的每一个叶子块。索引全扫描比全表扫描高效的原因是，索引块能存储更多的数据条目。
+   当没有谓语，但是所需列表可以通过一列的索引来获得。
+   例如： select email from emp;--email 上有索引
+   谓语中中包含一个索引中非引导列上的条件，或者数据可以通过一个排过序的索引来获取并且会省去单独的排序步骤。
+   例如：select last_name from emp --index(first_name,last_name)
+   
+ 索引跳跃扫描 Index Skip Scan：
+   当谓语中包含位于索引中非引导列上的条件，并且引导列的值是唯一的时候会选择索引跳跃扫描。
+   select * from emp where last_name = 'King' index(email,last_name)
+   
+ 索引快速全扫描  Fast Full Index Scan：   
+   快速全索引扫描，是全表扫描的替代：
+   也是一种全索引扫描，按照特定的顺序读取数据块。
       
    2.Reverse key indexes
      在RAC中的热块竞争问题。在A节点中插入一个id20，同时B节点也插入一个id21，就会插入到同一个块中这时使用反向键索引，就可将顺序键均匀分布。
@@ -111,23 +120,6 @@ Index organized tables：
   select /*+ (t emp_pk)*/  empno from emp t;
   格式：/*+ (表名 索引名)*/
   如果表名使用了别名，在hint中也需要使用别名。
-  
-  
-索引存储的是该列的值以及rowid，按照一定顺序存储。
-树形结构，分支块存储索引块的数据，叶子块存储数据块的数据。使用索引时，至少要访问树的高度加一个块。
-
-索引扫描的类型：
- 索引范围扫描：
-   当谓语中包含将返回一定范围数据的条件时，就会选用索引范围扫描。所指定的条件可以是>,<,like,between,甚至=，但是范围越大，就越可能全表扫描。
- 索引唯一扫描：
-   在谓语中使用unique或者primarykey作为条件时，就会选用索引唯一扫描。能够保证某个特定的值能够返回一行。
- 索引全扫描：
-   当没有谓语，但是所需列表可以通过一列的索引来获得。
-   谓语中中包含一个索引中非引导列上的条件，或者数据可以通过一个排过序的索引来获取并且会省去单独的排序步骤。
- 索引跳跃扫描：
-   当谓语中包含位于索引中非引导列上的条件，并且引导列的值是唯一的时候会选择索引跳跃扫描。
- 索引快速全扫描：
-   
 
 
 
